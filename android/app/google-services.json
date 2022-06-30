@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "874486023489",
+    "project_id": "mayo-muaythai",
+    "storage_bucket": "mayo-muaythai.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:874486023489:android:75e82706c445eb53408dc0",
+        "android_client_info": {
+          "package_name": "com.example.mayo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "874486023489-ucaagni18j6i32vcvunbep3bm5ioik88.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMSn-cKhT4uaJGf4Yf33QoPcbes2mQ3-U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "874486023489-ucaagni18j6i32vcvunbep3bm5ioik88.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "874486023489-5l66u3bebd59iejiruhtgcvv1p1lgouc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mayo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
