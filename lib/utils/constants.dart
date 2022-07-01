@@ -1,31 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // textstyle
-const titleTextStyle = TextStyle(
+var titleTextStyle = GoogleFonts.nunito(
   fontSize: 28,
   fontWeight: FontWeight.w800,
   color: darkTextColor,
   decoration: TextDecoration.none,
 );
 
-const headerTextStyle = TextStyle(
+var headerTextStyle = GoogleFonts.nunito(
   fontSize: 18,
   fontWeight: FontWeight.w600,
   color: darkTextColor,
   decoration: TextDecoration.none,
 );
 
-const subtitleTextStyle = TextStyle(
+var subtitleTextStyle = GoogleFonts.nunito(
   fontSize: 16,
   fontWeight: FontWeight.w500,
   color: normalTextColor,
   decoration: TextDecoration.none,
 );
 
-const normalTextStyle = TextStyle(
+var normalTextStyle = GoogleFonts.nunito(
   fontSize: 14,
   fontWeight: FontWeight.w400,
-  color: lightTextColor,
+  color: normalTextColor,
   decoration: TextDecoration.none,
 );
 
@@ -41,6 +42,7 @@ const normalRedColor = Color(0xFFFCB2A7);
 const darkRedColor = Color(0xFFFF8D81);
 const brightYellowColor = Color(0xFFFFF000);
 const darkYellowColor = Color(0xFFFBD801);
+const lightYellowColor = Color(0xFFFFFEF1);
 
 const mainGradient = LinearGradient(
     colors: [brightYellowColor, darkYellowColor],
@@ -52,3 +54,7 @@ const vSpaceS = SizedBox(height: 8);
 const hSpaceS = SizedBox(width: 8);
 const vSpaceM = SizedBox(height: 16);
 const hSpaceM = SizedBox(width: 16);
+const vSpaceL = SizedBox(height: 24);
+const hSpaceL = SizedBox(width: 24);
+const vSpaceXL = SizedBox(height: 32);
+const hSpaceXL = SizedBox(width: 32);

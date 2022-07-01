@@ -1,4 +1,7 @@
 {
     "welcome": "Welcome !",
-    "loginOrRegis": "Login or register using phone number"
+    "loginOrRegis": "Login or register using phone number",
+    "logOrRe": "Login or register",
+    "toSendPhone": "To send code to your phone number",
+    "sendBySMS": "Send by SMS"
 }

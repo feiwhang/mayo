@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mayo/screens/welcome_screen.dart';
+import 'package:mayo/screens/landing_screen.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -25,8 +25,8 @@ class Mayo extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Mayo',
       theme: ThemeData(
-          primarySwatch: Colors.blue,
-          textTheme: GoogleFonts.nunitoTextTheme(Theme.of(context).textTheme)),
+        textTheme: GoogleFonts.nunitoTextTheme(Theme.of(context).textTheme),
+      ),
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -37,7 +37,7 @@ class Mayo extends StatelessWidget {
         Locale('en', ''),
         Locale('th', ''),
       ],
-      home: const WelcomeScreen(),
+      home: const LandingScreen(),
     );
   }
 }
