@@ -2,10 +2,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:mayo/providers/phone_num_error_text_provider.dart';
 import 'package:mayo/screens/phone_verification_screen.dart';
 import 'package:mayo/utils/constants.dart';
+import 'package:mayo/utils/text_formatter.dart';
 import 'package:mayo/widgets/keyboard_dismissable.dart';
 
 class PhoneNumScreen extends ConsumerWidget {
@@ -39,7 +39,7 @@ class PhoneNumScreen extends ConsumerWidget {
                     children: [
                       Text(AppLocalizations.of(context)!.logOrRe,
                           style: titleTextStyle),
-                      vSpaceS,
+                      vSpaceM,
                       Text(AppLocalizations.of(context)!.toSendPhone,
                           style: subtitleTextStyle),
                       vSpaceXL,
@@ -65,15 +65,16 @@ class PhoneNumScreen extends ConsumerWidget {
                       ),
                       onPressed: () {
                         bool isValid = phoneNumNotifier.validatePhoneNum(
-                          controller.text.replaceAll(' ', ''),
+                          controller.text,
                           AppLocalizations.of(context)!.errorPhoneNum,
                         );
 
                         if (isValid) {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  const PhoneVerificationScreen(),
+                              builder: (context) => PhoneVerificationScreen(
+                                phoneNum: controller.text.replaceAll(' ', ''),
+                              ),
                             ),
                           );
                         }
@@ -106,11 +107,6 @@ class _PhoneNumTextFieldState extends State<PhoneNumTextField> {
   final FocusNode _focus = FocusNode();
   Color _bgColor = lightestGreyColor;
 
-  var maskFormatter = MaskTextInputFormatter(
-      mask: "### ### ####",
-      filter: {"#": RegExp(r'[0-9]')},
-      type: MaskAutoCompletionType.lazy);
-
   @override
   void initState() {
     super.initState();
@@ -134,6 +130,7 @@ class _PhoneNumTextFieldState extends State<PhoneNumTextField> {
   @override
   Widget build(BuildContext context) {
     String? errorText = widget.ref.watch(phoneNumErrorTextProvider);
+
     return SizedBox(
       width: 280,
       child: Theme(
@@ -147,7 +144,7 @@ class _PhoneNumTextFieldState extends State<PhoneNumTextField> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset('assets/icons/thailand.png', width: 24),
+                  Image.asset('assets/icons/thailand.png', width: 20),
                   hSpaceS,
                   Text("+66", style: subtitleTextStyle),
                   hSpaceM,
@@ -174,7 +171,7 @@ class _PhoneNumTextFieldState extends State<PhoneNumTextField> {
                 borderRadius: BorderRadius.all(Radius.circular(32)),
                 borderSide: BorderSide(color: normalRedColor)),
             filled: true,
-            fillColor: _bgColor,
+            fillColor: errorText == null ? _bgColor : lightRedColor,
             errorText: errorText,
           ),
           textAlignVertical: TextAlignVertical.center,
@@ -184,7 +181,7 @@ class _PhoneNumTextFieldState extends State<PhoneNumTextField> {
           style: headerTextStyle(darkTextColor),
           inputFormatters: [
             FilteringTextInputFormatter.digitsOnly,
-            maskFormatter
+            phoneNumFormatter
           ],
           autofocus: true,
           focusNode: _focus,
@@ -194,75 +191,3 @@ class _PhoneNumTextFieldState extends State<PhoneNumTextField> {
     );
   }
 }
-
-
-// class PhoneNumTextField extends ConsumerWidget {
-//   PhoneNumTextField({Key? key}) : super(key: key);
-
-//   final maskFormatter = MaskTextInputFormatter(
-//     mask: "### ### ####",
-//     filter: {"#": RegExp(r'[0-9]')},
-//   );
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     final PhoneNum phoneNumValue = ref.watch(phoneNumProvider);
-//     final PhoneNumNotifier phoneNumNotifier =
-//         ref.read(phoneNumProvider.notifier);
-
-//     return SizedBox(
-//       width: 272,
-//       child: Theme(
-//         data: Theme.of(context).copyWith(splashColor: Colors.transparent),
-//         child: Focus(
-//           focusNode: phoneNumValue.focusNode,
-//           onFocusChange: (bool hasFocus) =>
-//               phoneNumNotifier.onFocusChange(hasFocus),
-//           child: TextField(
-//             decoration: InputDecoration(
-//               prefixIcon: Padding(
-//                 padding: const EdgeInsets.only(left: 24),
-//                 child: Row(
-//                   mainAxisSize: MainAxisSize.min,
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   crossAxisAlignment: CrossAxisAlignment.center,
-//                   children: [
-//                     Image.asset('assets/icons/thailand.png', width: 20),
-//                     hSpaceS,
-//                     Text("+66", style: subtitleTextStyle),
-//                     hSpaceM,
-//                   ],
-//                 ),
-//               ),
-//               contentPadding: const EdgeInsets.all(16),
-//               hintText: '099 999 9999',
-//               hintStyle: headerTextStyle(lightTextColor),
-//               counterText: '',
-//               border: const OutlineInputBorder(
-//                   borderRadius: BorderRadius.all(Radius.circular(32)),
-//                   borderSide: BorderSide(color: Colors.transparent)),
-//               enabledBorder: const OutlineInputBorder(
-//                   borderRadius: BorderRadius.all(Radius.circular(32)),
-//                   borderSide: BorderSide(color: Colors.transparent)),
-//               focusedBorder: const OutlineInputBorder(
-//                   borderRadius: BorderRadius.all(Radius.circular(32)),
-//                   borderSide: BorderSide(color: darkYellowColor)),
-
-//               filled: true,
-//               fillColor: phoneNumValue.inputBgColor,
-//               errorText: phoneNumValue.errorText,
-//             ),
-//             textAlignVertical: TextAlignVertical.center,
-//             keyboardType: const TextInputType.numberWithOptions(),
-//             maxLength: 12,
-//             maxLines: 1,
-//             style: headerTextStyle(darkTextColor),
-//             inputFormatters: [maskFormatter],
-//             autofocus: true,
-//             controller: phoneNumValue.controller,
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

@@ -30,6 +30,13 @@ var normalTextStyle = GoogleFonts.nunito(
   decoration: TextDecoration.none,
 );
 
+var normalTextButtonStyle = GoogleFonts.nunito(
+  fontSize: 14,
+  fontWeight: FontWeight.w400,
+  color: darkestYellowColor,
+  decoration: TextDecoration.underline,
+);
+
 // color
 const darkTextColor = Color(0xFF363a52);
 const normalTextColor = Color(0xFF7E7A7A);
@@ -43,6 +50,7 @@ const normalRedColor = Color(0xFFFCB2A7);
 const darkRedColor = Color(0xFFFF8D81);
 const brightYellowColor = Color(0xFFFFF000);
 const darkYellowColor = Color(0xFFFBD801);
+const darkestYellowColor = Color(0xFFB0A92E);
 const lightYellowColor = Color(0xFFFFFEF1);
 
 const mainGradientV = LinearGradient(

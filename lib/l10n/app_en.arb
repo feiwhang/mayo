@@ -4,5 +4,11 @@
     "logOrRe": "Login or register",
     "toSendPhone": "To send code to your phone number",
     "sendBySMS": "Send by SMS",
-    "errorPhoneNum": "Wrong phone number format"
+    "errorPhoneNum": "Wrong phone number format",
+    "phoneVerification": "Phone verification",
+    "pleasePutCode": "Please put in 6-digit code sent to:",
+    "sendCodeAgain": "Send code again",
+    "sendCodeAgainIn": "Send code again in ",
+    "cont": "Continue",
+    "errorVerificationCode": "Wrong verification code"
 }

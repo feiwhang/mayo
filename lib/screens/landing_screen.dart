@@ -40,7 +40,7 @@ class LandingScreen extends StatelessWidget {
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 24, vertical: 16),
+                            horizontal: 32, vertical: 16),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(32),
                           color: lightestGreyColor,
