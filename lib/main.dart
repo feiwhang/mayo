@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mayo/screens/landing_screen.dart';
 import 'firebase_options.dart';
@@ -13,7 +14,11 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const Mayo());
+  runApp(
+    const ProviderScope(
+      child: Mayo(),
+    ),
+  );
 }
 
 class Mayo extends StatelessWidget {

@@ -9,12 +9,12 @@ var titleTextStyle = GoogleFonts.nunito(
   decoration: TextDecoration.none,
 );
 
-var headerTextStyle = GoogleFonts.nunito(
-  fontSize: 18,
-  fontWeight: FontWeight.w600,
-  color: darkTextColor,
-  decoration: TextDecoration.none,
-);
+TextStyle headerTextStyle(Color color) => GoogleFonts.nunito(
+      fontSize: 18,
+      fontWeight: FontWeight.w600,
+      color: color,
+      decoration: TextDecoration.none,
+    );
 
 var subtitleTextStyle = GoogleFonts.nunito(
   fontSize: 16,
@@ -33,7 +33,8 @@ var normalTextStyle = GoogleFonts.nunito(
 // color
 const darkTextColor = Color(0xFF363a52);
 const normalTextColor = Color(0xFF7E7A7A);
-const lightTextColor = Color(0xFF9DA2B4);
+const lightTextColor = Color(0xFFCAC8C8);
+const lightestGreyColor = Color(0xFFF8F7F7);
 const lightestGreenColor = Color(0xFFE8FBFE);
 const lightGreenColor = Color(0xFF81d0db);
 const darkGreenColor = Color(0xFF28a1b4);
@@ -44,10 +45,17 @@ const brightYellowColor = Color(0xFFFFF000);
 const darkYellowColor = Color(0xFFFBD801);
 const lightYellowColor = Color(0xFFFFFEF1);
 
-const mainGradient = LinearGradient(
-    colors: [brightYellowColor, darkYellowColor],
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter);
+const mainGradientV = LinearGradient(
+  colors: [brightYellowColor, darkYellowColor],
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+);
+
+const mainGradientH = LinearGradient(
+  colors: [brightYellowColor, darkYellowColor],
+  begin: Alignment.centerLeft,
+  end: Alignment.centerRight,
+);
 
 // spaces
 const vSpaceS = SizedBox(height: 8);

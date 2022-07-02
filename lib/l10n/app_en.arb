@@ -3,5 +3,6 @@
     "loginOrRegis": "Login or register using phone number",
     "logOrRe": "Login or register",
     "toSendPhone": "To send code to your phone number",
-    "sendBySMS": "Send by SMS"
+    "sendBySMS": "Send by SMS",
+    "errorPhoneNum": "Wrong phone number format"
 }
