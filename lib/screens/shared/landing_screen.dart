@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:mayo/screens/phone_num_screen.dart';
+import 'package:mayo/screens/shared/phone_num_screen.dart';
 import 'package:mayo/utils/constants.dart';
 
 class LandingScreen extends StatelessWidget {

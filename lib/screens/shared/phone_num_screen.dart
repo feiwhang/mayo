@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mayo/providers/phone_num_error_text_provider.dart';
-import 'package:mayo/screens/phone_verification_screen.dart';
+import 'package:mayo/screens/shared/phone_verification_screen.dart';
 import 'package:mayo/utils/constants.dart';
 import 'package:mayo/utils/text_formatter.dart';
 import 'package:mayo/widgets/keyboard_dismissable.dart';

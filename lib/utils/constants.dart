@@ -50,7 +50,7 @@ const normalRedColor = Color(0xFFFCB2A7);
 const darkRedColor = Color(0xFFFF8D81);
 const brightYellowColor = Color(0xFFFFF000);
 const darkYellowColor = Color(0xFFFBD801);
-const darkestYellowColor = Color(0xFFB0A92E);
+const darkestYellowColor = Color(0xFFFFC338);
 const lightYellowColor = Color(0xFFFFFEF1);
 
 const mainGradientV = LinearGradient(

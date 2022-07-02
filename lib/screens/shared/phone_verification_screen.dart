@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mayo/providers/verification_code_error_text_provider.dart';
-import 'package:mayo/screens/main_screen.dart';
+import 'package:mayo/screens/shared/main_screen.dart';
 import 'package:mayo/utils/constants.dart';
 import 'package:mayo/utils/text_formatter.dart';
 import 'package:mayo/widgets/keyboard_dismissable.dart';
@@ -58,7 +58,7 @@ class PhoneVerificationScreen extends ConsumerWidget {
                   Column(
                     children: [
                       const SendAgainTextCountDown(),
-                      vSpaceS,
+                      vSpaceM,
                       Container(
                         width: 228,
                         padding: const EdgeInsets.symmetric(vertical: 8),

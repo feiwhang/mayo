@@ -4,7 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mayo/screens/landing_screen.dart';
+import 'package:mayo/screens/shared/landing_screen.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
