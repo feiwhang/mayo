@@ -6,6 +6,7 @@ import 'package:mayo/providers/phone_num_error_text_provider.dart';
 import 'package:mayo/screens/shared/phone_verification_screen.dart';
 import 'package:mayo/utils/constants.dart';
 import 'package:mayo/utils/text_formatter.dart';
+import 'package:mayo/widgets/cta.dart';
 import 'package:mayo/widgets/keyboard_dismissable.dart';
 
 class PhoneNumScreen extends ConsumerWidget {
@@ -46,40 +47,24 @@ class PhoneNumScreen extends ConsumerWidget {
                       PhoneNumTextField(controller: controller, ref: ref),
                     ],
                   ),
-                  Container(
-                    width: 228,
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: const ShapeDecoration(
-                      shape: StadiumBorder(),
-                      gradient: mainGradientH,
-                    ),
-                    child: MaterialButton(
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      shape: const StadiumBorder(),
-                      splashColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      child: Text(
-                        AppLocalizations.of(context)!.sendBySMS,
-                        style: subtitleTextStyle,
-                      ),
-                      onPressed: () {
-                        bool isValid = phoneNumNotifier.validatePhoneNum(
-                          controller.text,
-                          AppLocalizations.of(context)!.errorPhoneNum,
-                        );
+                  Cta(
+                    label: AppLocalizations.of(context)!.sendBySMS,
+                    onPressed: () {
+                      bool isValid = phoneNumNotifier.validatePhoneNum(
+                        controller.text,
+                        AppLocalizations.of(context)!.errorPhoneNum,
+                      );
 
-                        if (isValid) {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => PhoneVerificationScreen(
-                                phoneNum: controller.text.replaceAll(' ', ''),
-                              ),
+                      if (isValid) {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => PhoneVerificationScreen(
+                              phoneNum: controller.text.replaceAll(' ', ''),
                             ),
-                          );
-                        }
-                      },
-                    ),
+                          ),
+                        );
+                      }
+                    },
                   ),
                 ],
               ),

@@ -23,12 +23,12 @@ var subtitleTextStyle = GoogleFonts.nunito(
   decoration: TextDecoration.none,
 );
 
-var normalTextStyle = GoogleFonts.nunito(
-  fontSize: 14,
-  fontWeight: FontWeight.w400,
-  color: normalTextColor,
-  decoration: TextDecoration.none,
-);
+TextStyle normalTextStyle(Color color) => GoogleFonts.nunito(
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      color: color,
+      decoration: TextDecoration.none,
+    );
 
 var normalTextButtonStyle = GoogleFonts.nunito(
   fontSize: 14,

@@ -10,5 +10,19 @@
     "sendCodeAgain": "Send code again",
     "sendCodeAgainIn": "Send code again in ",
     "cont": "Continue",
-    "errorVerificationCode": "Wrong verification code"
+    "errorVerificationCode": "Wrong verification code",
+    "register": "Register",
+    "yourNum": "Your phone number is ",
+    "whatDescYou": "What describes you best?",
+    "t_a": "Trainer / Admin",
+    "s_c": "Student / Customer",
+    "enterInfo": "Enter your information",
+    "step": "Step",
+    "name": "Name",
+    "age": "Age",
+    "gender": "Gender",
+    "confirm": "Confirm",
+    "male": "Male",
+    "female": "Female",
+    "others": "Others"
 }

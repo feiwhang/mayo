@@ -66,7 +66,7 @@ class LandingScreen extends StatelessWidget {
                     vSpaceM,
                     Text(
                       AppLocalizations.of(context)!.loginOrRegis,
-                      style: normalTextStyle,
+                      style: normalTextStyle(normalTextColor),
                     ),
                   ],
                 ),

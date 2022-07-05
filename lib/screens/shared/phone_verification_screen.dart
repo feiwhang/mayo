@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mayo/providers/verification_code_error_text_provider.dart';
-import 'package:mayo/screens/shared/main_screen.dart';
+import 'package:mayo/screens/shared/register_screen.dart';
 import 'package:mayo/utils/constants.dart';
 import 'package:mayo/utils/text_formatter.dart';
+import 'package:mayo/widgets/cta.dart';
 import 'package:mayo/widgets/keyboard_dismissable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -59,41 +60,25 @@ class PhoneVerificationScreen extends ConsumerWidget {
                     children: [
                       const SendAgainTextCountDown(),
                       vSpaceM,
-                      Container(
-                        width: 228,
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        decoration: const ShapeDecoration(
-                          shape: StadiumBorder(),
-                          gradient: mainGradientH,
-                        ),
-                        child: MaterialButton(
-                          materialTapTargetSize:
-                              MaterialTapTargetSize.shrinkWrap,
-                          shape: const StadiumBorder(),
-                          splashColor: Colors.transparent,
-                          focusColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          child: Text(
-                            AppLocalizations.of(context)!.cont,
-                            style: subtitleTextStyle,
-                          ),
-                          onPressed: () {
-                            bool isValid =
-                                codeErrorTextNotifier.validateVerificationCode(
-                              controller.text,
-                              AppLocalizations.of(context)!
-                                  .errorVerificationCode,
-                            );
-
-                            if (isValid) {
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                    builder: (context) => const MainScreen(),
-                                  ),
-                                  (Route<dynamic> route) => false);
-                            }
-                          },
-                        ),
+                      Cta(
+                        label: AppLocalizations.of(context)!.cont,
+                        onPressed: () {
+                          bool isValid =
+                              codeErrorTextNotifier.validateVerificationCode(
+                            controller.text,
+                            AppLocalizations.of(context)!.errorVerificationCode,
+                          );
+                          // TODO: firebase login if user exist
+                          if (isValid) {
+                            // TODO: push to MainScreen instead if user already signed up
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      RegisterScreen(phoneNum: phoneNum),
+                                ),
+                                (Route<dynamic> route) => false);
+                          }
+                        },
                       ),
                     ],
                   ),
@@ -146,10 +131,23 @@ class _SendAgainTextCountDownState extends State<SendAgainTextCountDown> {
   @override
   Widget build(BuildContext context) {
     return _count >= 1
-        ? Text("${AppLocalizations.of(context)!.sendCodeAgainIn} ${_count}s",
-            style: normalTextStyle)
+        ? RichText(
+            text: TextSpan(
+              style: DefaultTextStyle.of(context).style,
+              children: <TextSpan>[
+                TextSpan(
+                    text: AppLocalizations.of(context)!.sendCodeAgainIn,
+                    style: normalTextStyle(normalTextColor)),
+                TextSpan(
+                    text: " ${_count}s",
+                    style: normalTextStyle(darkestYellowColor)),
+              ],
+            ),
+          )
         : TextButton(
-            onPressed: () {},
+            onPressed: () {
+              // TODO: firebase send verification code again
+            },
             style: ButtonStyle(
               overlayColor: MaterialStateColor.resolveWith(
                   (states) => Colors.transparent),
