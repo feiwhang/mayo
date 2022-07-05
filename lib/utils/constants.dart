@@ -74,3 +74,26 @@ const vSpaceL = SizedBox(height: 24);
 const hSpaceL = SizedBox(width: 24);
 const vSpaceXL = SizedBox(height: 32);
 const hSpaceXL = SizedBox(width: 32);
+
+// inputDecor
+InputDecoration roundedRectDecor(String label) => InputDecoration(
+      contentPadding: const EdgeInsets.all(16),
+      labelText: label,
+      labelStyle: normalTextStyle(lightTextColor),
+      counterText: '',
+      border: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          borderSide: BorderSide(color: Colors.grey.shade200)),
+      enabledBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          borderSide: BorderSide(color: Colors.grey.shade200)),
+      focusedBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          borderSide: BorderSide(color: darkYellowColor)),
+      errorBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          borderSide: BorderSide(color: normalRedColor)),
+      focusedErrorBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          borderSide: BorderSide(color: normalRedColor)),
+    );
