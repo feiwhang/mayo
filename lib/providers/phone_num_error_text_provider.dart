@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mayo/utils/constants.dart';
 
 final phoneNumErrorTextProvider =
     StateNotifierProvider.autoDispose<PhoneNumErrorTextNotifier, String?>(
@@ -10,7 +11,7 @@ class PhoneNumErrorTextNotifier extends StateNotifier<String?> {
   PhoneNumErrorTextNotifier() : super(null);
 
   bool validatePhoneNum(String phoneText, String errorText) {
-    final phoneNumRegex = RegExp(r"^0[6,8,9][0-9]{8}$");
+    final phoneNumRegex = RegExp(thaiPhoneNumRegex);
 
     String phoneNum = phoneText.replaceAll(' ', '');
     bool hasMatch = phoneNumRegex.hasMatch(phoneNum);

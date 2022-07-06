@@ -2,8 +2,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mayo/firebase/auth_services.dart';
 import 'package:mayo/providers/phone_num_error_text_provider.dart';
-import 'package:mayo/screens/shared/phone_verification_screen.dart';
 import 'package:mayo/utils/constants.dart';
 import 'package:mayo/utils/text_formatter.dart';
 import 'package:mayo/widgets/cta.dart';
@@ -16,13 +16,13 @@ class PhoneNumScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final TextEditingController controller = TextEditingController();
 
-    final PhoneNumErrorTextNotifier phoneNumNotifier =
+    final PhoneNumErrorTextNotifier phoneNumErrorTextNotifier =
         ref.read(phoneNumErrorTextProvider.notifier);
 
     return KeyboardDismissable(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
           shadowColor: Colors.transparent,
           systemOverlayStyle: SystemUiOverlayStyle.dark,
           iconTheme: const IconThemeData(color: normalTextColor, size: 18),
@@ -50,19 +50,12 @@ class PhoneNumScreen extends ConsumerWidget {
                   Cta(
                     label: AppLocalizations.of(context)!.sendBySMS,
                     onPressed: () {
-                      bool isValid = phoneNumNotifier.validatePhoneNum(
+                      bool isValid = phoneNumErrorTextNotifier.validatePhoneNum(
                         controller.text,
                         AppLocalizations.of(context)!.errorPhoneNum,
                       );
-
                       if (isValid) {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => PhoneVerificationScreen(
-                              phoneNum: controller.text.replaceAll(' ', ''),
-                            ),
-                          ),
-                        );
+                        sendPhoneNumVerificationCode(controller.text, context);
                       }
                     },
                   ),

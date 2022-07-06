@@ -16,7 +16,7 @@ class RegisterScreen extends StatelessWidget {
     return KeyboardDismissable(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
           shadowColor: Colors.transparent,
           systemOverlayStyle: SystemUiOverlayStyle.dark,
           iconTheme: const IconThemeData(color: normalTextColor, size: 18),
@@ -43,7 +43,7 @@ class RegisterScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Expanded(flex: 1, child: RegisterView()),
+                  Expanded(flex: 1, child: RegisterView(phoneNum: phoneNum)),
                 ],
               ),
             ),
@@ -55,7 +55,9 @@ class RegisterScreen extends StatelessWidget {
 }
 
 class RegisterView extends StatefulWidget {
-  const RegisterView({Key? key}) : super(key: key);
+  const RegisterView({Key? key, required this.phoneNum}) : super(key: key);
+
+  final String phoneNum;
 
   @override
   State<RegisterView> createState() => _RegisterViewState();
@@ -87,8 +89,8 @@ class _RegisterViewState extends State<RegisterView> {
     return Column(
       children: [
         Text(AppLocalizations.of(context)!.whatDescYou,
-            style: headerTextStyle(darkTextColor)),
-        vSpaceXL,
+            style: subtitleTextStyle),
+        vSpaceL,
         Cta(
           label: AppLocalizations.of(context)!.s_c,
           onPressed: () {
@@ -125,9 +127,9 @@ class _RegisterViewState extends State<RegisterView> {
       child: Column(
         children: [
           Text(AppLocalizations.of(context)!.enterInfo,
-              style: headerTextStyle(darkTextColor)),
-          vSpaceXL,
-          RegisterInformation(userRole: userRole),
+              style: subtitleTextStyle),
+          vSpaceL,
+          RegisterInformation(phoneNum: widget.phoneNum, userRole: userRole),
         ],
       ),
     );
@@ -135,8 +137,10 @@ class _RegisterViewState extends State<RegisterView> {
 }
 
 class RegisterInformation extends StatefulWidget {
-  const RegisterInformation({Key? key, this.userRole}) : super(key: key);
+  const RegisterInformation({Key? key, this.userRole, required this.phoneNum})
+      : super(key: key);
 
+  final String phoneNum;
   final UserRole? userRole;
 
   @override
@@ -238,6 +242,7 @@ class _RegisterInformationState extends State<RegisterInformation> {
                 style: subtitleTextStyle,
               ),
               onPressed: () {
+                print(widget.phoneNum);
                 print(widget.userRole.toString());
                 print(_nameController.text);
                 print(_ageController.text);
