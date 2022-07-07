@@ -55,7 +55,7 @@ class PhoneNumScreen extends ConsumerWidget {
                         AppLocalizations.of(context)!.errorPhoneNum,
                       );
                       if (isValid) {
-                        sendPhoneNumVerificationCode(controller.text, context);
+                        sendPhoneNumVerificationCode(controller.text);
                       }
                     },
                   ),

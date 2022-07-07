@@ -7,6 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mayo/screens/shared/landing_screen.dart';
 import 'firebase_options.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -43,6 +45,7 @@ class Mayo extends StatelessWidget {
         Locale('th', ''),
       ],
       home: const LandingScreen(),
+      navigatorKey: navigatorKey,
     );
   }
 }

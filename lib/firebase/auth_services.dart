@@ -1,28 +1,54 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mayo/main.dart';
+import 'package:mayo/screens/shared/main_screen.dart';
 import 'package:mayo/screens/shared/phone_verification_screen.dart';
+import 'package:mayo/screens/shared/register_screen.dart';
 import 'package:mayo/utils/converter.dart';
+import 'package:mayo/widgets/alert_dialogs.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+final FirebaseAuth auth = FirebaseAuth.instance;
 
 bool isAuthenticated() {
-  FirebaseAuth auth = FirebaseAuth.instance;
   return auth.currentUser != null;
 }
 
-Future<void> sendPhoneNumVerificationCode(
-    String phoneNum, BuildContext context) async {
-  FirebaseAuth auth = FirebaseAuth.instance;
+String? getUID() {
+  return isAuthenticated() ? auth.currentUser?.uid : null;
+}
+
+Future<void> sendPhoneNumVerificationCode(String phoneNum) async {
+  showDialog(
+    context: navigatorKey.currentContext!,
+    builder: (BuildContext context) => LoadingDialog(
+        loadingText: AppLocalizations.of(context)!.verifyingPhone),
+    barrierDismissible: false,
+  );
 
   await auth.verifyPhoneNumber(
-    phoneNumber: firebasePhoneNum(phoneNum),
+    phoneNumber: textToFirebasePhoneNum(phoneNum),
     verificationCompleted: (PhoneAuthCredential credential) async {
+      navigatorKey.currentState?.pop(); // close loading dialog
+
       await signUserIn(credential);
     },
     verificationFailed: (FirebaseAuthException e) {
-      // TODO: alert dialog based on error code ex. invalid phone num
+      navigatorKey.currentState?.pop(); // close loading dialog
+
+      showDialog(
+        context: navigatorKey.currentContext!,
+        builder: (BuildContext context) => ErrorDialog(
+          errTitle: AppLocalizations.of(context)!.sthWentWrong,
+          errText: AppLocalizations.of(context)!.errorInvalidPhoneNum,
+        ),
+      );
     },
     codeSent: (String verificationId, int? resendToken) {
+      navigatorKey.currentState?.pop(); // close loading dialog
+
       // push to phone verification screen (smsCode)
-      Navigator.of(context).push(
+      navigatorKey.currentState?.push(
         MaterialPageRoute(
           builder: (context) => PhoneVerificationScreen(
             phoneNum: phoneNum.replaceAll(' ', ''),
@@ -30,10 +56,10 @@ Future<void> sendPhoneNumVerificationCode(
           ),
         ),
       );
-      // set verificationId to be used in phone verification screen
-      print("set veriID: $verificationId");
     },
-    codeAutoRetrievalTimeout: (String verificationId) {},
+    codeAutoRetrievalTimeout: (String verificationId) {
+      navigatorKey.currentState?.pop(); // close loading dialog
+    },
   );
 }
 
@@ -46,8 +72,38 @@ Future<void> verifyCodeFromPhoneNum(
 }
 
 Future<void> signUserIn(PhoneAuthCredential credential) async {
-  FirebaseAuth auth = FirebaseAuth.instance;
+  try {
+    showDialog(
+      context: navigatorKey.currentContext!,
+      builder: (BuildContext context) =>
+          LoadingDialog(loadingText: AppLocalizations.of(context)!.signingIn),
+      barrierDismissible: false,
+    );
 
-  // TODO: Handle errors & register
-  await auth.signInWithCredential(credential);
+    UserCredential userCredential = await auth.signInWithCredential(credential);
+
+    navigatorKey.currentState?.pop(); // close loading dialog
+
+    // check if new user
+    if (userCredential.additionalUserInfo == null ||
+        userCredential.additionalUserInfo!.isNewUser) {
+      // new user -> send to register screen
+      navigatorKey.currentState?.pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => RegisterScreen(
+              phoneNum:
+                  firebasePhoneNumToText(userCredential.user!.phoneNumber!),
+            ),
+          ),
+          (Route<dynamic> route) => false);
+    } else {
+      // current user -> send to main screen
+      navigatorKey.currentState?.pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const MainScreen()),
+          (Route<dynamic> route) => false);
+    }
+  } catch (e) {
+    // TODO: Handle errors
+
+  }
 }

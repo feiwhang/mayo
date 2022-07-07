@@ -24,5 +24,10 @@
     "confirm": "Confirm",
     "male": "Male",
     "female": "Female",
-    "others": "Others"
+    "others": "Others",
+    "sthWentWrong": "Something went wrong",
+    "errorInvalidPhoneNum": "Invalid phone number, please use differrent number.",
+    "loading": "Loading",
+    "verifyingPhone": "Verifying phone number",
+    "signingIn": "Signing in"
 }

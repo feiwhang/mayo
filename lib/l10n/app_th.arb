@@ -24,5 +24,10 @@
     "confirm": "ยืนยัน",
     "male": "ชาย",
     "female": "หญิง",
-    "others": "อื่นๆ"
+    "others": "อื่นๆ",
+    "sthWentWrong": "เกิดข้อผิดพลาด",
+    "errorInvalidPhoneNum": "เบอร์โทรศัพท์ไม่ถูกต้อง, กรุณาใช้หมายเลขอื่น",
+    "loading": "กำลังดำเนินการ",
+    "verifyingPhone": "กำลังยืนยันเบอร์โทร",
+    "signingIn": "กำลังเข้าสู่ระบบ"
 }

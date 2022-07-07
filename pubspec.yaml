@@ -33,4 +33,4 @@ flutter:
     generate: true
 
     assets:
-        - ./assets/icons/thailand.png
+        - ./assets/icons/
