@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mayo/main.dart';
 import 'package:mayo/screens/shared/main_screen.dart';
 import 'package:mayo/screens/shared/phone_verification_screen.dart';
 import 'package:mayo/screens/shared/register_screen.dart';
+import 'package:mayo/utils/constants.dart';
 import 'package:mayo/utils/converter.dart';
 import 'package:mayo/widgets/alert_dialogs.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -103,7 +103,6 @@ Future<void> signUserIn(PhoneAuthCredential credential) async {
           (Route<dynamic> route) => false);
     }
   } catch (e) {
-    // TODO: Handle errors
-
+    // TODO: Handle login errors
   }
 }

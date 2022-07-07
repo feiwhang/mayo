@@ -11,6 +11,7 @@ class LandingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         decoration: const BoxDecoration(
           gradient: mainGradientV,
         ),

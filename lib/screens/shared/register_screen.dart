@@ -22,7 +22,7 @@ class RegisterScreen extends StatelessWidget {
           iconTheme: const IconThemeData(color: normalTextColor, size: 18),
         ),
         body: Container(
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
           color: Colors.white,
           child: SafeArea(
             child: SizedBox.expand(
@@ -39,11 +39,11 @@ class RegisterScreen extends StatelessWidget {
                         Text(
                             "${AppLocalizations.of(context)!.yourNum} ${phoneNumFormatter.maskText(phoneNum)}",
                             style: subtitleTextStyle),
-                        vSpaceXL,
                       ],
                     ),
                   ),
-                  Expanded(flex: 1, child: RegisterView(phoneNum: phoneNum)),
+                  vSpaceXL,
+                  RegisterView(phoneNum: phoneNum),
                 ],
               ),
             ),
@@ -64,24 +64,63 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  final PageController _pageController = PageController();
+  final PageController pageController = PageController();
   UserRole? userRole;
+  int _pageIndex = 1;
+  bool isAgreed = false;
+
+  @override
+  void initState() {
+    pageController.addListener(() {
+      setState(() {
+        _pageIndex = pageController.page!.toInt() + 1;
+      });
+    });
+    super.initState();
+  }
 
   @override
   void dispose() {
-    _pageController.dispose();
+    pageController.dispose();
+    pageController.removeListener(() {});
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      physics: const NeverScrollableScrollPhysics(),
-      controller: _pageController,
-      children: [
-        firstStepPage(context),
-        secondStepPage(context),
-      ],
+    return Expanded(
+      flex: _pageIndex == 3 ? 4 : 1,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          RichText(
+            text: TextSpan(
+              style: DefaultTextStyle.of(context).style,
+              children: <TextSpan>[
+                TextSpan(
+                    text: AppLocalizations.of(context)!.step,
+                    style: headerTextStyle(darkTextColor)),
+                TextSpan(
+                    text: " $_pageIndex",
+                    style: headerTextStyle(darkestYellowColor)),
+                TextSpan(text: " / 3", style: headerTextStyle(normalTextColor)),
+              ],
+            ),
+          ),
+          vSpaceS,
+          Expanded(
+            child: PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: pageController,
+              children: [
+                firstStepPage(context),
+                secondStepPage(context),
+                thirdStepPage(context),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -90,15 +129,14 @@ class _RegisterViewState extends State<RegisterView> {
       children: [
         Text(AppLocalizations.of(context)!.whatDescYou,
             style: subtitleTextStyle),
-        vSpaceL,
+        vSpaceXL,
         Cta(
           label: AppLocalizations.of(context)!.s_c,
           onPressed: () {
             setState(() {
               userRole = UserRole.user;
             });
-            _pageController.animateToPage(
-              1,
+            pageController.nextPage(
               duration: const Duration(milliseconds: 400),
               curve: Curves.easeInOut,
             );
@@ -111,7 +149,7 @@ class _RegisterViewState extends State<RegisterView> {
             setState(() {
               userRole = UserRole.admin;
             });
-            _pageController.animateToPage(
+            pageController.animateToPage(
               1,
               duration: const Duration(milliseconds: 400),
               curve: Curves.easeInOut,
@@ -128,20 +166,83 @@ class _RegisterViewState extends State<RegisterView> {
         children: [
           Text(AppLocalizations.of(context)!.enterInfo,
               style: subtitleTextStyle),
-          vSpaceL,
-          RegisterInformation(phoneNum: widget.phoneNum, userRole: userRole),
+          vSpaceXL,
+          RegisterInformation(
+            phoneNum: widget.phoneNum,
+            userRole: userRole,
+            pageController: pageController,
+          ),
         ],
       ),
+    );
+  }
+
+  Widget thirdStepPage(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Text(AppLocalizations.of(context)!.agreeToTerms,
+            style: subtitleTextStyle),
+        vSpaceXL,
+        const RegisterTerms(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Checkbox(
+              value: isAgreed,
+              onChanged: (value) {
+                setState(() {
+                  isAgreed = value ?? false;
+                });
+              },
+              checkColor: Colors.white,
+              activeColor: darkestYellowColor,
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                minimumSize: Size.zero,
+                padding: EdgeInsets.zero,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                splashFactory: NoSplash.splashFactory,
+              ),
+              onPressed: () {
+                setState(() {
+                  isAgreed = !isAgreed;
+                });
+              },
+              child: Text(
+                AppLocalizations.of(context)!.byChecking,
+                style: normalTextStyle(normalTextColor),
+                overflow: TextOverflow.ellipsis,
+              ),
+            )
+          ],
+        ),
+        Cta(
+          label: AppLocalizations.of(context)!.confirm,
+          bgColor: isAgreed ? null : lightTextColor,
+          onPressed: () {
+            if (isAgreed) {
+              // TODO: write user info to firestore
+            }
+          },
+        ),
+      ],
     );
   }
 }
 
 class RegisterInformation extends StatefulWidget {
-  const RegisterInformation({Key? key, this.userRole, required this.phoneNum})
+  const RegisterInformation(
+      {Key? key,
+      this.userRole,
+      required this.phoneNum,
+      required this.pageController})
       : super(key: key);
 
   final String phoneNum;
   final UserRole? userRole;
+  final PageController pageController;
 
   @override
   State<RegisterInformation> createState() => _RegisterInformationState();
@@ -224,34 +325,55 @@ class _RegisterInformationState extends State<RegisterInformation> {
             ],
           ),
           vSpaceXL,
-          Container(
-            width: 228,
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            decoration: const ShapeDecoration(
-              shape: StadiumBorder(),
-              gradient: mainGradientH,
-            ),
-            child: MaterialButton(
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              shape: const StadiumBorder(),
-              splashColor: Colors.transparent,
-              focusColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              child: Text(
-                AppLocalizations.of(context)!.confirm,
-                style: subtitleTextStyle,
-              ),
-              onPressed: () {
-                print(widget.phoneNum);
-                print(widget.userRole.toString());
-                print(_nameController.text);
-                print(_ageController.text);
-                print(_gender);
-                // TODO: register user on firebase
-              },
-            ),
+          Cta(
+            label: AppLocalizations.of(context)!.cont,
+            onPressed: () {
+              // TODO: validate register form
+              widget.pageController.nextPage(
+                duration: const Duration(milliseconds: 400),
+                curve: Curves.easeInOut,
+              );
+            },
           ),
         ],
+      ),
+    );
+  }
+}
+
+class RegisterTerms extends StatefulWidget {
+  const RegisterTerms({Key? key}) : super(key: key);
+
+  @override
+  State<RegisterTerms> createState() => _RegisterTermsState();
+}
+
+class _RegisterTermsState extends State<RegisterTerms> {
+  String? termsText;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  void _loadData() async {
+    final loadedData = await rootBundle.loadString('assets/texts/terms.txt');
+    setState(() {
+      termsText = loadedData;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+          color: lightestGreyColor,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        padding: const EdgeInsets.all(16),
+        child: SingleChildScrollView(child: Text(termsText ?? '')),
       ),
     );
   }

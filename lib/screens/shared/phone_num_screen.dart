@@ -28,7 +28,7 @@ class PhoneNumScreen extends ConsumerWidget {
           iconTheme: const IconThemeData(color: normalTextColor, size: 18),
         ),
         body: Container(
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
           color: Colors.white,
           child: SafeArea(
             child: SizedBox.expand(

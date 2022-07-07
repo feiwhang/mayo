@@ -29,5 +29,7 @@
     "errorInvalidPhoneNum": "Invalid phone number, please use differrent number.",
     "loading": "Loading",
     "verifyingPhone": "Verifying phone number",
-    "signingIn": "Signing in"
+    "signingIn": "Signing in",
+    "agreeToTerms": "Agree to terms",
+    "byChecking": "I have read and accept to the term of services"
 }

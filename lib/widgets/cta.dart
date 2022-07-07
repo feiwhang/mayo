@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:mayo/utils/constants.dart';
 
 class Cta extends StatelessWidget {
-  const Cta({Key? key, required this.label, this.onPressed}) : super(key: key);
+  const Cta({Key? key, required this.label, this.onPressed, this.bgColor})
+      : super(key: key);
 
   final String label;
+  final Color? bgColor;
   final void Function()? onPressed;
 
   @override
@@ -12,9 +14,10 @@ class Cta extends StatelessWidget {
     return Container(
       width: 228,
       padding: const EdgeInsets.symmetric(vertical: 8),
-      decoration: const ShapeDecoration(
-        shape: StadiumBorder(),
-        gradient: mainGradientH,
+      decoration: ShapeDecoration(
+        shape: const StadiumBorder(),
+        gradient: bgColor == null ? mainGradientH : null,
+        color: bgColor,
       ),
       child: MaterialButton(
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

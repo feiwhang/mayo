@@ -101,3 +101,6 @@ InputDecoration roundedRectDecor(String label) => InputDecoration(
 
 // regex
 const String thaiPhoneNumRegex = r"^0[6,8,9][0-9]{8}$";
+
+// etc
+final navigatorKey = GlobalKey<NavigatorState>();

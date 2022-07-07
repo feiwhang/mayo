@@ -4,10 +4,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mayo/screens/shared/landing_screen.dart';
+import 'package:mayo/screens/shared/register_screen.dart';
+import 'package:mayo/utils/constants.dart';
 import 'firebase_options.dart';
-
-final navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,7 +43,8 @@ class Mayo extends StatelessWidget {
         Locale('en', ''),
         Locale('th', ''),
       ],
-      home: const LandingScreen(),
+      home: const RegisterScreen(phoneNum: '099 999 9999'),
+      // home: const LandingScreen(),
       navigatorKey: navigatorKey,
     );
   }
