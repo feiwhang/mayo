@@ -4,7 +4,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mayo/screens/shared/register_screen.dart';
+import 'package:mayo/firebase/auth_services.dart';
+import 'package:mayo/screens/shared/landing_screen.dart';
+import 'package:mayo/screens/shared/main_screen.dart';
 import 'package:mayo/utils/constants.dart';
 import 'firebase_options.dart';
 
@@ -43,8 +45,7 @@ class Mayo extends StatelessWidget {
         Locale('en', ''),
         Locale('th', ''),
       ],
-      home: const RegisterScreen(phoneNum: '099 999 9999'),
-      // home: const LandingScreen(),
+      home: isAuthenticated() ? const MainScreen() : const LandingScreen(),
       navigatorKey: navigatorKey,
     );
   }

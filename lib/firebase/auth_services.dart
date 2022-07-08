@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mayo/screens/shared/landing_screen.dart';
 import 'package:mayo/screens/shared/main_screen.dart';
 import 'package:mayo/screens/shared/phone_verification_screen.dart';
 import 'package:mayo/screens/shared/register_screen.dart';
@@ -105,4 +106,12 @@ Future<void> signUserIn(PhoneAuthCredential credential) async {
   } catch (e) {
     // TODO: Handle login errors
   }
+}
+
+Future<void> logout() async {
+  await auth.signOut();
+
+    navigatorKey.currentState?.pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const LandingScreen()),
+            (Route<dynamic> route) => false);
 }

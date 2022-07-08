@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mayo/firebase/auth_services.dart';
 import 'package:mayo/providers/nav_bar_index_provider.dart';
 import 'package:mayo/utils/constants.dart';
 
@@ -11,6 +12,9 @@ class MainScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Main Screen"),
+        actions: [
+          TextButton(onPressed: () {logout();}, child: Text("Logout", style: headerTextStyle(darkRedColor),),),
+        ],
       ),
       bottomNavigationBar: const NavBar(),
     );

@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mayo/class/user_role.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mayo/enums/user_role.dart';
+import 'package:mayo/firebase/db_services.dart';
+import 'package:mayo/providers/register_data_provider.dart';
 import 'package:mayo/utils/constants.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mayo/utils/text_formatter.dart';
+import 'package:mayo/widgets/alert_dialogs.dart';
 import 'package:mayo/widgets/cta.dart';
 import 'package:mayo/widgets/keyboard_dismissable.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends ConsumerWidget {
   const RegisterScreen({Key? key, required this.phoneNum}) : super(key: key);
   final String phoneNum;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return KeyboardDismissable(
       child: Scaffold(
         appBar: AppBar(
@@ -43,7 +47,7 @@ class RegisterScreen extends StatelessWidget {
                     ),
                   ),
                   vSpaceXL,
-                  RegisterView(phoneNum: phoneNum),
+                  RegisterView(phoneNum: phoneNum, ref: ref),
                 ],
               ),
             ),
@@ -55,9 +59,11 @@ class RegisterScreen extends StatelessWidget {
 }
 
 class RegisterView extends StatefulWidget {
-  const RegisterView({Key? key, required this.phoneNum}) : super(key: key);
+  const RegisterView({Key? key, required this.phoneNum, required this.ref})
+      : super(key: key);
 
   final String phoneNum;
+  final WidgetRef ref;
 
   @override
   State<RegisterView> createState() => _RegisterViewState();
@@ -171,6 +177,7 @@ class _RegisterViewState extends State<RegisterView> {
             phoneNum: widget.phoneNum,
             userRole: userRole,
             pageController: pageController,
+            ref: widget.ref,
           ),
         ],
       ),
@@ -178,6 +185,8 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
   Widget thirdStepPage(BuildContext context) {
+    final registerData = widget.ref.watch(registerDataProvider);
+
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
@@ -223,7 +232,7 @@ class _RegisterViewState extends State<RegisterView> {
           bgColor: isAgreed ? null : lightTextColor,
           onPressed: () {
             if (isAgreed) {
-              // TODO: write user info to firestore
+              createUserOnDb(registerData);
             }
           },
         ),
@@ -237,12 +246,14 @@ class RegisterInformation extends StatefulWidget {
       {Key? key,
       this.userRole,
       required this.phoneNum,
-      required this.pageController})
+      required this.pageController,
+      required this.ref})
       : super(key: key);
 
   final String phoneNum;
   final UserRole? userRole;
   final PageController pageController;
+  final WidgetRef ref;
 
   @override
   State<RegisterInformation> createState() => _RegisterInformationState();
@@ -256,6 +267,17 @@ class _RegisterInformationState extends State<RegisterInformation> {
 
   @override
   Widget build(BuildContext context) {
+    bool validateForm() {
+      if (_nameController.text.isEmpty ||
+          _ageController.text.isEmpty ||
+          _gender == null ||
+          widget.userRole == null) return false;
+      return true;
+    }
+
+    final RegisterDataNotifier registerDataNotifier =
+        widget.ref.read(registerDataProvider.notifier);
+
     return Form(
       key: _formKey,
       child: Column(
@@ -315,7 +337,6 @@ class _RegisterInformationState extends State<RegisterInformation> {
                   },
                   style: normalTextStyle(normalTextColor),
                   focusColor: brightYellowColor,
-                  elevation: 1,
                   dropdownColor: lightestGreyColor,
                   borderRadius: const BorderRadius.all(Radius.circular(8)),
                   decoration:
@@ -328,11 +349,29 @@ class _RegisterInformationState extends State<RegisterInformation> {
           Cta(
             label: AppLocalizations.of(context)!.cont,
             onPressed: () {
-              // TODO: validate register form
-              widget.pageController.nextPage(
-                duration: const Duration(milliseconds: 400),
-                curve: Curves.easeInOut,
-              );
+              if (validateForm()) {
+                final registerData = <String, String>{
+                  "role": widget.userRole!.name,
+                  "name": _nameController.text.trim(),
+                  "age": _ageController.text.trim(),
+                  "gender": _gender!,
+                };
+
+                registerDataNotifier.setRegsiterData(registerData);
+
+                widget.pageController.nextPage(
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeInOut,
+                );
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (context) => ErrorDialog(
+                    errTitle: AppLocalizations.of(context)!.sthWentWrong,
+                    errText: AppLocalizations.of(context)!.errorBlank,
+                  ),
+                );
+              }
             },
           ),
         ],

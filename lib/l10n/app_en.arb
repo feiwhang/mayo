@@ -31,5 +31,7 @@
     "verifyingPhone": "Verifying phone number",
     "signingIn": "Signing in",
     "agreeToTerms": "Agree to terms",
-    "byChecking": "I have read and accept to the term of services"
+    "byChecking": "I have read and accept to the term of services",
+    "errorBlank": "No field can be left blank.",
+    "signingUp": "Signing up"
 }
