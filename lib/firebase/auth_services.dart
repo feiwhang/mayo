@@ -2,11 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mayo/providers/user_data_provider.dart';
-import 'package:mayo/screens/shared/landing_screen.dart';
 import 'package:mayo/screens/shared/main_screen.dart';
 import 'package:mayo/screens/shared/phone_verification_screen.dart';
 import 'package:mayo/screens/shared/register_screen.dart';
-import 'package:mayo/utils/constants.dart';
+import 'package:mayo/utils/constants/main_const.dart';
 import 'package:mayo/utils/converter.dart';
 import 'package:mayo/widgets/alert_dialogs.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -113,8 +112,4 @@ Future<void> logout(WidgetRef ref) async {
   await auth.signOut();
 
   ref.read(userDataProvider.notifier).resetUserData();
-
-  navigatorKey.currentState?.pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => const LandingScreen()),
-      (Route<dynamic> route) => false);
 }

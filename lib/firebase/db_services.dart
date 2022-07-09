@@ -5,7 +5,7 @@ import 'package:mayo/firebase/auth_services.dart';
 import 'package:mayo/providers/user_data_provider.dart';
 import 'package:mayo/screens/shared/landing_screen.dart';
 import 'package:mayo/screens/shared/main_screen.dart';
-import 'package:mayo/utils/constants.dart';
+import 'package:mayo/utils/constants/main_const.dart';
 import 'package:mayo/utils/converter.dart';
 import 'package:mayo/widgets/alert_dialogs.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

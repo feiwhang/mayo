@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mayo/utils/constants.dart';
+import 'package:mayo/utils/constants/color_const.dart';
+import 'package:mayo/utils/constants/text_style_const.dart';
 
 class Cta extends StatelessWidget {
   const Cta({Key? key, required this.label, this.onPressed, this.bgColor})

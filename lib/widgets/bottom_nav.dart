@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mayo/enums/user_role.dart';
 import 'package:mayo/providers/nav_bar_index_provider.dart';
 import 'package:mayo/providers/user_data_provider.dart';
-import 'package:mayo/utils/constants.dart';
+import 'package:mayo/utils/constants/color_const.dart';
+import 'package:mayo/utils/constants/navbar_const.dart';
+import 'package:mayo/utils/constants/text_style_const.dart';
 
 class BottomNav extends ConsumerWidget {
   const BottomNav({Key? key}) : super(key: key);

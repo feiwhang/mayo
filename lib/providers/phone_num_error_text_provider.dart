@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mayo/utils/constants.dart';
+import 'package:mayo/utils/constants/main_const.dart';
 
 final phoneNumErrorTextProvider =
     StateNotifierProvider.autoDispose<PhoneNumErrorTextNotifier, String?>(

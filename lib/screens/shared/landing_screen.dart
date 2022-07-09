@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mayo/screens/shared/phone_num_screen.dart';
-import 'package:mayo/utils/constants.dart';
+import 'package:mayo/utils/constants/color_const.dart';
+import 'package:mayo/utils/constants/space_const.dart';
+import 'package:mayo/utils/constants/text_style_const.dart';
 
 class LandingScreen extends StatelessWidget {
   const LandingScreen({Key? key}) : super(key: key);
