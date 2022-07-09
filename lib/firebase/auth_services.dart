@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mayo/providers/user_data_provider.dart';
 import 'package:mayo/screens/shared/landing_screen.dart';
 import 'package:mayo/screens/shared/main_screen.dart';
 import 'package:mayo/screens/shared/phone_verification_screen.dart';
@@ -41,7 +43,8 @@ Future<void> sendPhoneNumVerificationCode(String phoneNum) async {
         context: navigatorKey.currentContext!,
         builder: (BuildContext context) => ErrorDialog(
           errTitle: AppLocalizations.of(context)!.sthWentWrong,
-          errText: AppLocalizations.of(context)!.errorInvalidPhoneNum,
+          errText:
+              e.message ?? AppLocalizations.of(context)!.errorInvalidPhoneNum,
         ),
       );
     },
@@ -58,9 +61,7 @@ Future<void> sendPhoneNumVerificationCode(String phoneNum) async {
         ),
       );
     },
-    codeAutoRetrievalTimeout: (String verificationId) {
-      navigatorKey.currentState?.pop(); // close loading dialog
-    },
+    codeAutoRetrievalTimeout: (String verificationId) {},
   );
 }
 
@@ -108,10 +109,12 @@ Future<void> signUserIn(PhoneAuthCredential credential) async {
   }
 }
 
-Future<void> logout() async {
+Future<void> logout(WidgetRef ref) async {
   await auth.signOut();
 
-    navigatorKey.currentState?.pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => const LandingScreen()),
-            (Route<dynamic> route) => false);
+  ref.read(userDataProvider.notifier).resetUserData();
+
+  navigatorKey.currentState?.pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => const LandingScreen()),
+      (Route<dynamic> route) => false);
 }

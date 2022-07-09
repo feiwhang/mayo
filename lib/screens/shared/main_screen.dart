@@ -1,61 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mayo/firebase/auth_services.dart';
-import 'package:mayo/providers/nav_bar_index_provider.dart';
+import 'package:mayo/firebase/db_services.dart';
+import 'package:mayo/providers/user_data_provider.dart';
+import 'package:mayo/screens/shared/loading_screen.dart';
 import 'package:mayo/utils/constants.dart';
+import 'package:mayo/widgets/bottom_nav.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends ConsumerWidget {
   const MainScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Main Screen"),
-        actions: [
-          TextButton(onPressed: () {logout();}, child: Text("Logout", style: headerTextStyle(darkRedColor),),),
-        ],
-      ),
-      bottomNavigationBar: const NavBar(),
-    );
-  }
-}
-
-class NavBar extends ConsumerWidget {
-  const NavBar({Key? key}) : super(key: key);
-
-  @override
   Widget build(BuildContext context, WidgetRef ref) {
-    int selectedIndex = ref.watch(navBarIndexProvider);
-    NavBarIndexNotifier navBarIndexNotifier =
-        ref.read(navBarIndexProvider.notifier);
+    UserData? userData = ref.watch(userDataProvider);
 
-    return Theme(
-      data: ThemeData(
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-      ),
-      child: BottomNavigationBar(
-        items: [
-          navItem(Icons.home, 'Home'),
-          navItem(Icons.home, 'Home'),
-          navItem(Icons.home, 'Home'),
-        ],
-        currentIndex: selectedIndex,
-        onTap: navBarIndexNotifier.setIndex,
-        selectedLabelStyle: normalTextStyle(normalTextColor),
-        unselectedLabelStyle: normalTextStyle(normalTextColor),
-        selectedItemColor: darkestYellowColor,
-        unselectedItemColor: normalTextColor,
-        backgroundColor: Colors.white,
-      ),
-    );
-  }
+    if (userData == null) {
+      getUserData(ref);
+    }
 
-  BottomNavigationBarItem navItem(IconData iconData, String label) {
-    return BottomNavigationBarItem(
-      icon: Icon(iconData),
-      label: label,
-    );
+    return userData == null
+        ? const LoadingScreen()
+        : Scaffold(
+            appBar: AppBar(
+              title: const Text("Main Screen"),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    logout(ref);
+                  },
+                  child: Text(
+                    "Logout",
+                    style: headerTextStyle(darkRedColor),
+                  ),
+                ),
+              ],
+            ),
+            bottomNavigationBar: const BottomNav(),
+            body: Center(
+              child: Text("${userData.name}"),
+            ),
+          );
   }
 }

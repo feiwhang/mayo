@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -46,16 +49,6 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBmB8-tBKD2nOBDbBfz-8TGcsOJEc7GtPM',
-    appId: '1:874486023489:web:b8765f7595b771e0408dc0',
-    messagingSenderId: '874486023489',
-    projectId: 'mayo-muaythai',
-    authDomain: 'mayo-muaythai.firebaseapp.com',
-    storageBucket: 'mayo-muaythai.appspot.com',
-    measurementId: 'G-KXGL1N9L88',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAMSn-cKhT4uaJGf4Yf33QoPcbes2mQ3-U',
     appId: '1:874486023489:android:75e82706c445eb53408dc0',
@@ -70,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '874486023489',
     projectId: 'mayo-muaythai',
     storageBucket: 'mayo-muaythai.appspot.com',
+    androidClientId: '874486023489-55b0v8vdt0as5jtfcahd1jvt1nunc08v.apps.googleusercontent.com',
     iosClientId: '874486023489-5l66u3bebd59iejiruhtgcvv1p1lgouc.apps.googleusercontent.com',
     iosBundleId: 'com.example.mayo',
   );

@@ -1,12 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final registerDataProvider = StateNotifierProvider.autoDispose<
-    RegisterDataNotifier, Map<String, String>>((ref) {
+    RegisterDataNotifier, Map<String, dynamic>>((ref) {
   return RegisterDataNotifier();
 });
 
-class RegisterDataNotifier extends StateNotifier<Map<String, String>> {
+class RegisterDataNotifier extends StateNotifier<Map<String, dynamic>> {
   RegisterDataNotifier() : super({});
 
-  void setRegsiterData(Map<String, String> newData) => state = newData;
+  void setRegsiterData(Map<String, dynamic> newData) => state = newData;
 }

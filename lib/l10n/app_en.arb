@@ -15,7 +15,7 @@
     "yourNum": "Your phone number is ",
     "whatDescYou": "What describes you best?",
     "t_a": "Trainer / Admin",
-    "s_c": "Student / Customer",
+    "s_c": "Student / Member",
     "enterInfo": "Enter your information",
     "step": "Step",
     "name": "Name",
@@ -33,5 +33,6 @@
     "agreeToTerms": "Agree to terms",
     "byChecking": "I have read and accept to the term of services",
     "errorBlank": "No field can be left blank.",
-    "signingUp": "Signing up"
+    "signingUp": "Signing up",
+    "loadingUserData": "Loading user profile"
 }

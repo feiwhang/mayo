@@ -99,6 +99,7 @@ class LoadingDialog extends StatelessWidget {
             height: 64,
             child: CircularProgressIndicator(
               color: darkestYellowColor,
+              strokeWidth: 2,
             ),
           ),
           vSpaceXL,

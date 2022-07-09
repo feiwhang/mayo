@@ -350,10 +350,10 @@ class _RegisterInformationState extends State<RegisterInformation> {
             label: AppLocalizations.of(context)!.cont,
             onPressed: () {
               if (validateForm()) {
-                final registerData = <String, String>{
+                final registerData = <String, dynamic>{
                   "role": widget.userRole!.name,
                   "name": _nameController.text.trim(),
-                  "age": _ageController.text.trim(),
+                  "age": int.parse(_ageController.text.trim()),
                   "gender": _gender!,
                 };
 
