@@ -34,5 +34,12 @@
     "byChecking": "I have read and accept to the term of services",
     "errorBlank": "No field can be left blank.",
     "signingUp": "Signing up",
-    "loadingUserData": "Loading user profile"
+    "loadingUserData": "Loading user profile",
+    "signOut": "Sign out",
+    "lang": "Language",
+    "changeLang": "Change language",
+    "changingLang": "Changing language",
+    "home": "Home",
+    "profile": "Profile",
+    "search": "Search"
 }

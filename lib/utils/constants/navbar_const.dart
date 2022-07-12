@@ -1,13 +1,27 @@
 // navbars
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-final adminBottomNavLabels = ["Home", "Profile"];
-final adminBottomNavIconData = [Icons.home_outlined, Icons.person_outlined];
-final adminBottomNavActiveIconData = [Icons.home, Icons.person];
-final userBottomNavLabels = ["Home", "Search", "Profile"];
+adminBottomNavLabels(BuildContext context) =>
+    [AppLocalizations.of(context)!.home, AppLocalizations.of(context)!.profile];
+final adminBottomNavIconData = [
+  Icons.home_outlined,
+  Icons.account_circle_outlined
+];
+final adminBottomNavActiveIconData = [Icons.home, Icons.account_circle];
+
+userBottomNavLabels(BuildContext context) => [
+      AppLocalizations.of(context)!.home,
+      AppLocalizations.of(context)!.search,
+      AppLocalizations.of(context)!.profile
+    ];
 final userBottomNavIconData = [
   Icons.home_outlined,
   Icons.search_outlined,
-  Icons.person_outline
+  Icons.account_circle_outlined
 ];
-final userBottomNavActiveIconData = [Icons.home, Icons.search, Icons.person];
+final userBottomNavActiveIconData = [
+  Icons.home,
+  Icons.search,
+  Icons.account_circle
+];

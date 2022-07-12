@@ -107,7 +107,7 @@ class LoadingDialog extends StatelessWidget {
           vSpaceXL,
           Text(
             loadingText ?? AppLocalizations.of(context)!.loading,
-            style: headerTextStyle(darkTextColor),
+            style: normalTextStyle(darkTextColor),
           ),
         ],
       ),

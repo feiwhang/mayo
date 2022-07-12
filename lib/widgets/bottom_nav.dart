@@ -25,14 +25,14 @@ class BottomNav extends ConsumerWidget {
       ),
       child: BottomNavigationBar(
         items: userData!.role == UserRole.admin
-            ? navItems(adminBottomNavLabels, adminBottomNavIconData,
+            ? navItems(adminBottomNavLabels(context), adminBottomNavIconData,
                 adminBottomNavActiveIconData)
-            : navItems(userBottomNavLabels, userBottomNavIconData,
+            : navItems(userBottomNavLabels(context), userBottomNavIconData,
                 userBottomNavActiveIconData),
         currentIndex: selectedIndex,
         onTap: navBarIndexNotifier.setIndex,
-        selectedLabelStyle: normalTextStyle(normalTextColor),
-        unselectedLabelStyle: normalTextStyle(normalTextColor),
+        selectedLabelStyle: normalTextStyle(darkYellowColor),
+        unselectedLabelStyle: normalTextStyle(darkTextColor),
         selectedItemColor: darkestYellowColor,
         unselectedItemColor: lightTextColor,
         backgroundColor: Colors.white,
