@@ -45,11 +45,18 @@ class AdminProfileView extends ConsumerWidget {
           ),
         ),
         actions: [
-          TextButton(
-            onPressed: () => logout(ref),
-            child: Text(
-              AppLocalizations.of(context)!.signOut,
-              style: normalTextStyle(darkRedColor),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextButton(
+              onPressed: () => logout(ref),
+              style: TextButton.styleFrom(
+                primary: darkRedColor,
+                backgroundColor: darkRedColor,
+              ),
+              child: Text(
+                AppLocalizations.of(context)!.signOut,
+                style: normalTextStyle(Colors.white),
+              ),
             ),
           )
         ],
@@ -67,7 +74,14 @@ class AdminProfileView extends ConsumerWidget {
               textBaseline: TextBaseline.alphabetic,
               children: [
                 langTextButton("English", "en", ref, context),
-                Text("|", style: normalTextStyle(normalTextColor)),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  child: VerticalDivider(
+                    color: normalTextColor,
+                    width: 0,
+                    thickness: 1,
+                  ),
+                ),
                 langTextButton("ไทย", "th", ref, context),
               ],
             ),
@@ -82,42 +96,52 @@ class AdminProfileView extends ConsumerWidget {
       String langText, String langCode, WidgetRef ref, BuildContext context) {
     late Timer timer;
 
-    return TextButton(
-      onPressed: () async {
-        final prefs = await SharedPreferences.getInstance();
+    final String? langCodeProviderValue = ref.watch(langCodeProvider);
 
-        // check if already that langCode
-        String? currentLangCode = prefs.getString("langCode");
-        if (currentLangCode == langCode) return;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextButton(
+        onPressed: () async {
+          final prefs = await SharedPreferences.getInstance();
 
-        prefs.setString("langCode", langCode);
+          // check if already that langCode
+          String? currentLangCode = prefs.getString("langCode");
+          if (currentLangCode == langCode) return;
 
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            timer = Timer(const Duration(seconds: 1), () {
-              Navigator.of(context).pop();
-            });
-            return LoadingDialog(
-                loadingText: AppLocalizations.of(context)!.changingLang);
-          },
-          barrierDismissible: false,
-        ).then((value) {
-          timer.isActive ? timer.cancel() : null;
-        });
+          prefs.setString("langCode", langCode);
 
-        // change lang on the provider
-        final LangCodeNotifier langCodeNotifier =
-            ref.read(langCodeProvider.notifier);
-        langCodeNotifier.setLangCode(langCode);
-      },
-      style: TextButton.styleFrom(
-        splashFactory: NoSplash.splashFactory,
-        primary: Colors.transparent,
-      ),
-      child: Text(
-        langText,
-        style: normalTextStyle(normalTextColor),
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              timer = Timer(const Duration(seconds: 1), () {
+                Navigator.of(context).pop();
+              });
+              return LoadingDialog(
+                  loadingText: AppLocalizations.of(context)!.changingLang);
+            },
+            barrierDismissible: false,
+          ).then((value) {
+            timer.isActive ? timer.cancel() : null;
+          });
+
+          // change lang on the provider
+          final LangCodeNotifier langCodeNotifier =
+              ref.read(langCodeProvider.notifier);
+          langCodeNotifier.setLangCode(langCode);
+        },
+        style: TextButton.styleFrom(
+          splashFactory: NoSplash.splashFactory,
+          primary: Colors.transparent,
+          backgroundColor: langCodeProviderValue == langCode
+              ? darkestYellowColor
+              : Colors.transparent,
+        ),
+        child: Text(
+          langText,
+          style: normalTextStyle(langCodeProviderValue == langCode
+              ? Colors.white
+              : normalTextColor),
+        ),
       ),
     );
   }
