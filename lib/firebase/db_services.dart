@@ -54,3 +54,12 @@ Future<void> createUserOnDb(Map<String, dynamic> registerData) async {
       MaterialPageRoute(builder: (context) => const MainScreen()),
       (Route<dynamic> route) => false);
 }
+
+// return String of the gym id or null if admin doesn't join any gym yet
+Future<String?> getAdminGymId() async {
+  DocumentSnapshot doc = await usersCollection.doc(getUID()).get();
+
+  final data = doc.data() as Map<String, dynamic>;
+
+  return data.containsKey('gymId') ? data['gymId'] : null;
+}

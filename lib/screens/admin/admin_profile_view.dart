@@ -58,7 +58,8 @@ class AdminProfileView extends ConsumerWidget {
                 style: normalTextStyle(Colors.white),
               ),
             ),
-          )
+          ),
+          const SizedBox(width: 8)
         ],
       ),
       body: ListView(
@@ -70,15 +71,13 @@ class AdminProfileView extends ConsumerWidget {
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.baseline,
-              textBaseline: TextBaseline.alphabetic,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 langTextButton("English", "en", ref, context),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 16.0),
                   child: VerticalDivider(
                     color: normalTextColor,
-                    width: 0,
                     thickness: 1,
                   ),
                 ),
@@ -98,50 +97,46 @@ class AdminProfileView extends ConsumerWidget {
 
     final String? langCodeProviderValue = ref.watch(langCodeProvider);
 
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextButton(
-        onPressed: () async {
-          final prefs = await SharedPreferences.getInstance();
+    return TextButton(
+      onPressed: () async {
+        final prefs = await SharedPreferences.getInstance();
 
-          // check if already that langCode
-          String? currentLangCode = prefs.getString("langCode");
-          if (currentLangCode == langCode) return;
+        // check if already that langCode
+        String? currentLangCode = prefs.getString("langCode");
+        if (currentLangCode == langCode) return;
 
-          prefs.setString("langCode", langCode);
+        prefs.setString("langCode", langCode);
 
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              timer = Timer(const Duration(seconds: 1), () {
-                Navigator.of(context).pop();
-              });
-              return LoadingDialog(
-                  loadingText: AppLocalizations.of(context)!.changingLang);
-            },
-            barrierDismissible: false,
-          ).then((value) {
-            timer.isActive ? timer.cancel() : null;
-          });
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            timer = Timer(const Duration(seconds: 1), () {
+              Navigator.of(context).pop();
+            });
+            return LoadingDialog(
+                loadingText: AppLocalizations.of(context)!.changingLang);
+          },
+          barrierDismissible: false,
+        ).then((value) {
+          timer.isActive ? timer.cancel() : null;
+        });
 
-          // change lang on the provider
-          final LangCodeNotifier langCodeNotifier =
-              ref.read(langCodeProvider.notifier);
-          langCodeNotifier.setLangCode(langCode);
-        },
-        style: TextButton.styleFrom(
-          splashFactory: NoSplash.splashFactory,
-          primary: Colors.transparent,
-          backgroundColor: langCodeProviderValue == langCode
-              ? darkestYellowColor
-              : Colors.transparent,
-        ),
-        child: Text(
-          langText,
-          style: normalTextStyle(langCodeProviderValue == langCode
-              ? Colors.white
-              : normalTextColor),
-        ),
+        // change lang on the provider
+        final LangCodeNotifier langCodeNotifier =
+            ref.read(langCodeProvider.notifier);
+        langCodeNotifier.setLangCode(langCode);
+      },
+      style: TextButton.styleFrom(
+        splashFactory: NoSplash.splashFactory,
+        primary: Colors.transparent,
+        backgroundColor: langCodeProviderValue == langCode
+            ? darkestYellowColor
+            : Colors.transparent,
+      ),
+      child: Text(
+        langText,
+        style: normalTextStyle(
+            langCodeProviderValue == langCode ? Colors.white : normalTextColor),
       ),
     );
   }

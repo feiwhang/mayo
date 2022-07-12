@@ -42,5 +42,6 @@
     "home": "Home",
     "profile": "Profile",
     "myGym": "My Gym",
-    "search": "Search"
+    "search": "Search",
+    "loadingGym": "Loading gym info"
 }
