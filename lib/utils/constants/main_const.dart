@@ -3,7 +3,8 @@ import 'package:mayo/utils/constants/color_const.dart';
 import 'package:mayo/utils/constants/text_style_const.dart';
 
 // inputDecor
-InputDecoration roundedRectDecor(String label) => InputDecoration(
+InputDecoration roundedRectDecor(String label, [Widget? icon]) =>
+    InputDecoration(
       contentPadding: const EdgeInsets.all(16),
       labelText: label,
       labelStyle: normalTextStyle(lightTextColor),
@@ -23,6 +24,8 @@ InputDecoration roundedRectDecor(String label) => InputDecoration(
       focusedErrorBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(8)),
           borderSide: BorderSide(color: normalRedColor)),
+      suffixIcon: icon,
+      suffixIconColor: darkestYellowColor,
     );
 
 // regex

@@ -8,6 +8,8 @@ final newGymProvider =
 
 class NewGym {
   XFile? imageFile;
+  String? name;
+  bool isOffical = false;
 }
 
 class NewGymNotifier extends StateNotifier<NewGym> {
@@ -25,6 +27,15 @@ class NewGymNotifier extends StateNotifier<NewGym> {
     NewGym newState = copyState;
 
     newState.imageFile = newImageFile;
+
+    state = newState;
+  }
+
+  void setName(String newName, bool isOffical) {
+    NewGym newState = copyState;
+
+    newState.name = newName;
+    newState.isOffical = isOffical;
 
     state = newState;
   }

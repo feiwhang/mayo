@@ -48,5 +48,8 @@
     "createGym": "Create new gym",
     "joinGym": "Join existing gym",
     "or": "Or",
-    "img": "Image"
+    "img": "Image",
+    "cancel": "Cancel",
+    "done": "Done",
+    "selectOffical": "Select Offical gyms"
 }
