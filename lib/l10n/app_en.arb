@@ -43,5 +43,10 @@
     "profile": "Profile",
     "myGym": "My Gym",
     "search": "Search",
-    "loadingGym": "Loading gym info"
+    "loadingGym": "Loading gym info",
+    "noGym": "There's no gym information",
+    "createGym": "Create new gym",
+    "joinGym": "Join existing gym",
+    "or": "Or",
+    "img": "Image"
 }

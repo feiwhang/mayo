@@ -29,7 +29,7 @@ class Mayo extends ConsumerWidget {
     final LangCodeNotifier langCodeNotifier =
         ref.read(langCodeProvider.notifier);
 
-    return FutureBuilder<String?>(
+    return FutureBuilder<String>(
       future: langCodeNotifier.setLangCodeFromSharedPref(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
@@ -56,7 +56,7 @@ class Mayo extends ConsumerWidget {
             navigatorKey: navigatorKey,
           );
         } else {
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         }
       },
     );
