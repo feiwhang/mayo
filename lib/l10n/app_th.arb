@@ -54,5 +54,7 @@
     "selectOffical": "เลือกจากยิมมาตรฐาน",
     "description": "คำอธิบาย",
     "address": "ที่อยู่",
-    "pickLocation": "เลือกตำแหน่งยิม"
+    "pickLocation": "เลือกตำแหน่งยิม",
+    "pleaseEnableLocation": "โปรดเปิดใช้งานระบุตำแหน่ง",
+    "refresh": "ลองใหม่อีกครั้ง"
 }

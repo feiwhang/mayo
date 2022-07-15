@@ -54,5 +54,7 @@
     "selectOffical": "Select Offical gyms",
     "description": "Description",
     "address": "Address",
-    "pickLocation": "Pick gym location"
+    "pickLocation": "Pick gym location",
+    "pleaseEnableLocation": "Please enable location services",
+    "refresh": "Refresh"
 }

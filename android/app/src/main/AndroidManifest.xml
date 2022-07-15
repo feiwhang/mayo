@@ -26,6 +26,8 @@
             </intent-filter>
             <!-- Required to fetch data from the internet. -->
             <uses-permission android:name="android.permission.INTERNET" />
+            <meta-data android:name="com.google.android.geo.API_KEY"
+                       android:value="AIzaSyCWWSSJdd_liSezD2L-_rQA5EIF6KqI1LY"/>
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
@@ -33,4 +35,6 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 </manifest>
