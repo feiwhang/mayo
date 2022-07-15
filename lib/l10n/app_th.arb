@@ -56,5 +56,7 @@
     "address": "ที่อยู่",
     "pickLocation": "เลือกตำแหน่งยิม",
     "pleaseEnableLocation": "โปรดเปิดใช้งานระบุตำแหน่ง",
-    "refresh": "ลองใหม่อีกครั้ง"
+    "refresh": "ลองใหม่อีกครั้ง",
+    "selectThisLocation": "เลือกตำแหน่งนี้",
+    "ok": "ตกลง"
 }

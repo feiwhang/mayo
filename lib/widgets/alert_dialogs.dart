@@ -33,10 +33,8 @@ class ErrorDialog extends StatelessWidget {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.pop(context, 'OK'),
-          child: const Text(
-            'OK',
-          ),
+          onPressed: () => Navigator.pop(context),
+          child: Text(AppLocalizations.of(context)!.ok),
         ),
       ],
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -111,6 +109,53 @@ class LoadingDialog extends StatelessWidget {
           ),
         ],
       ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    );
+  }
+}
+
+class ConfirmDialog extends StatelessWidget {
+  const ConfirmDialog(
+      {Key? key,
+      required this.confirmTitle,
+      required this.confirmText,
+      required this.onConfirmed})
+      : super(key: key);
+  final String confirmTitle;
+  final String confirmText;
+  final void Function() onConfirmed;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset('assets/icons/cancel.png', width: 72),
+          vSpaceXL,
+          Text(
+            confirmTitle,
+            textAlign: TextAlign.center,
+            style: headerTextStyle(darkestYellowColor),
+          ),
+          vSpaceS,
+          Text(
+            confirmText,
+            textAlign: TextAlign.center,
+            style: normalTextStyle(normalTextColor),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(AppLocalizations.of(context)!.cancel),
+        ),
+        TextButton(
+          onPressed: () => onConfirmed,
+          child: Text(AppLocalizations.of(context)!.confirm),
+        ),
+      ],
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     );
   }

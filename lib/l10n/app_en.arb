@@ -56,5 +56,7 @@
     "address": "Address",
     "pickLocation": "Pick gym location",
     "pleaseEnableLocation": "Please enable location services",
-    "refresh": "Refresh"
+    "refresh": "Refresh",
+    "selectThisLocation": "Select this location",
+    "ok": "OK"
 }
