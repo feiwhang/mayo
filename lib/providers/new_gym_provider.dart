@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -8,8 +9,10 @@ final newGymProvider =
 
 class NewGym {
   XFile? imageFile;
-  String? name;
   bool isOffical = false;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController descController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
 }
 
 class NewGymNotifier extends StateNotifier<NewGym> {
@@ -19,6 +22,9 @@ class NewGymNotifier extends StateNotifier<NewGym> {
     NewGym newState = NewGym();
 
     newState.imageFile = state.imageFile;
+    newState.nameController.text = state.nameController.text;
+    newState.descController.text = state.descController.text;
+    newState.addressController.text = state.addressController.text;
 
     return newState;
   }
@@ -27,15 +33,6 @@ class NewGymNotifier extends StateNotifier<NewGym> {
     NewGym newState = copyState;
 
     newState.imageFile = newImageFile;
-
-    state = newState;
-  }
-
-  void setName(String newName, bool isOffical) {
-    NewGym newState = copyState;
-
-    newState.name = newName;
-    newState.isOffical = isOffical;
 
     state = newState;
   }

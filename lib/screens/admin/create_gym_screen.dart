@@ -6,17 +6,20 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mayo/providers/new_gym_provider.dart';
+import 'package:mayo/screens/admin/pick_location_screen.dart';
 import 'package:mayo/utils/api_services.dart';
 import 'package:mayo/utils/constants/color_const.dart';
 import 'package:mayo/utils/constants/main_const.dart';
 import 'package:mayo/utils/constants/space_const.dart';
 import 'package:mayo/utils/constants/text_style_const.dart';
+import 'package:mayo/widgets/alert_dialogs.dart';
+import 'package:mayo/widgets/cta.dart';
 
-class CreateGymScreen extends StatelessWidget {
+class CreateGymScreen extends ConsumerWidget {
   const CreateGymScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: lightestGreyColor,
       appBar: AppBar(
@@ -27,10 +30,44 @@ class CreateGymScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
-          children: [const ImagePickerSection(), vSpaceM, InfoFormSection()],
+          children: [
+            const ImagePickerSection(),
+            vSpaceM,
+            const InfoFormSection(),
+            vSpaceXL,
+            Cta(
+              label: AppLocalizations.of(context)!.cont,
+              onPressed: () {
+                // validate new gym form
+                validateCreateGymForm(ref)
+                    ? // ok
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const PickLocationScreen()))
+                    : showDialog(
+                        context: navigatorKey.currentContext!,
+                        builder: (BuildContext context) => ErrorDialog(
+                          errTitle: AppLocalizations.of(context)!.sthWentWrong,
+                          errText: AppLocalizations.of(context)!.errorBlank,
+                        ),
+                      );
+              },
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  bool validateCreateGymForm(WidgetRef ref) {
+    NewGym newGym = ref.watch(newGymProvider);
+
+    if (newGym.imageFile == null ||
+        newGym.nameController.text.isEmpty ||
+        newGym.addressController.text.isEmpty) {
+      return false;
+    }
+
+    return true;
   }
 }
 
@@ -103,11 +140,12 @@ class ImagePickerSection extends ConsumerWidget {
 }
 
 class InfoFormSection extends ConsumerWidget {
-  InfoFormSection({Key? key}) : super(key: key);
-  final TextEditingController nameController = TextEditingController();
+  const InfoFormSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    NewGym newGym = ref.watch(newGymProvider);
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -125,7 +163,7 @@ class InfoFormSection extends ConsumerWidget {
                     showCupertinoModalPopup(
                         context: context,
                         builder: (context) => SelectOfficalNameModal(
-                            nameController: nameController));
+                            nameController: newGym.nameController));
                   },
                   child: const Icon(
                     Icons.more_vert,
@@ -138,7 +176,33 @@ class InfoFormSection extends ConsumerWidget {
               keyboardType: TextInputType.text,
               maxLength: 255,
               maxLines: 1,
-              controller: nameController,
+              controller: newGym.nameController,
+              style: normalTextStyle(darkTextColor),
+            ),
+            vSpaceM,
+            TextFormField(
+              decoration: roundedRectDecor(
+                AppLocalizations.of(context)!.description,
+              ),
+              textAlignVertical: TextAlignVertical.center,
+              textAlign: TextAlign.start,
+              keyboardType: TextInputType.text,
+              maxLength: 255,
+              maxLines: 5,
+              controller: newGym.descController,
+              style: normalTextStyle(darkTextColor),
+            ),
+            vSpaceM,
+            TextFormField(
+              decoration: roundedRectDecor(
+                "${AppLocalizations.of(context)!.address} *",
+              ),
+              textAlignVertical: TextAlignVertical.center,
+              textAlign: TextAlign.start,
+              keyboardType: TextInputType.text,
+              maxLength: 255,
+              maxLines: 3,
+              controller: newGym.addressController,
               style: normalTextStyle(darkTextColor),
             ),
           ],

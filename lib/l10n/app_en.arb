@@ -51,5 +51,8 @@
     "img": "Image",
     "cancel": "Cancel",
     "done": "Done",
-    "selectOffical": "Select Offical gyms"
+    "selectOffical": "Select Offical gyms",
+    "description": "Description",
+    "address": "Address",
+    "pickLocation": "Pick gym location"
 }

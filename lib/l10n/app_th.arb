@@ -51,5 +51,8 @@
     "img": "รูปภาพ",
     "cancel": "ยกเลิก",
     "done": "เสร็จสิ้น",
-    "selectOffical": "เลือกจากยิมมาตรฐาน"
+    "selectOffical": "เลือกจากยิมมาตรฐาน",
+    "description": "คำอธิบาย",
+    "address": "ที่อยู่",
+    "pickLocation": "เลือกตำแหน่งยิม"
 }
