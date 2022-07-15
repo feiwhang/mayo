@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mayo/firebase/db_services.dart';
-import 'package:mayo/screens/admin/pick_location_screen.dart';
+import 'package:mayo/screens/admin/create_gym_screen.dart';
 import 'package:mayo/utils/constants/color_const.dart';
 import 'package:mayo/utils/constants/space_const.dart';
 import 'package:mayo/utils/constants/text_style_const.dart';
@@ -56,7 +56,7 @@ class AdminMyGymView extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const PickLocationScreen()));
+                          builder: (context) => const CreateGymScreen()));
                     },
                     child: Text(
                       AppLocalizations.of(context)!.createGym,

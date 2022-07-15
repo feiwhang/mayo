@@ -7,6 +7,7 @@ import 'package:mayo/providers/new_gym_provider.dart';
 import 'package:mayo/utils/constants/color_const.dart';
 import 'package:mayo/utils/constants/space_const.dart';
 import 'package:mayo/utils/get_position.dart';
+import 'package:mayo/widgets/alert_dialogs.dart';
 import 'package:mayo/widgets/cta.dart';
 
 class PickLocationScreen extends StatefulWidget {
@@ -60,16 +61,21 @@ class PickLocationMap extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final CameraPosition startPosition = CameraPosition(
+      target: LatLng(position.latitude, position.longitude),
+      zoom: 14,
+    );
+
     final NewGymNotifier newGymNotifier = ref.read(newGymProvider.notifier);
+    NewGym newGym = ref.watch(newGymProvider);
 
     return Stack(
       children: [
         GoogleMap(
-          initialCameraPosition: CameraPosition(
-            target: LatLng(position.latitude, position.longitude),
-            zoom: 14,
-          ),
+          initialCameraPosition: startPosition,
           myLocationEnabled: true,
+          onMapCreated: (controller) =>
+              newGymNotifier.setCameraPosition(startPosition),
           zoomGesturesEnabled: true,
           onCameraMove: (CameraPosition newCameraPosition) =>
               newGymNotifier.setCameraPosition(newCameraPosition),
@@ -89,7 +95,19 @@ class PickLocationMap extends ConsumerWidget {
           left: 32,
           child: Cta(
             label: AppLocalizations.of(context)!.selectThisLocation,
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => ConfirmDialog(
+                  confirmTitle: AppLocalizations.of(context)!.confirmCreateGym,
+                  confirmText:
+                      "name: ${newGym.nameController.text}\naddress: ${newGym.addressController.text}\nlat: ${newGym.cameraPosition!.target.latitude}\nlong: ${newGym.cameraPosition!.target.longitude}",
+                  onConfirmed: () {
+                    // TODO: set up firebase logic
+                  },
+                ),
+              );
+            },
           ),
         ),
       ],

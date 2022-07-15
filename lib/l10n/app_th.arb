@@ -58,5 +58,6 @@
     "pleaseEnableLocation": "โปรดเปิดใช้งานระบุตำแหน่ง",
     "refresh": "ลองใหม่อีกครั้ง",
     "selectThisLocation": "เลือกตำแหน่งนี้",
-    "ok": "ตกลง"
+    "ok": "ตกลง",
+    "confirmCreateGym": "ยืนยันสร้างยิมใหม่"
 }

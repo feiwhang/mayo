@@ -58,5 +58,6 @@
     "pleaseEnableLocation": "Please enable location services",
     "refresh": "Refresh",
     "selectThisLocation": "Select this location",
-    "ok": "OK"
+    "ok": "OK",
+    "confirmCreateGym": "Confirm to create new gym"
 }

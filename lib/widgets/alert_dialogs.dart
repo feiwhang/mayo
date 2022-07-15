@@ -131,8 +131,6 @@ class ConfirmDialog extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset('assets/icons/cancel.png', width: 72),
-          vSpaceXL,
           Text(
             confirmTitle,
             textAlign: TextAlign.center,
@@ -141,7 +139,6 @@ class ConfirmDialog extends StatelessWidget {
           vSpaceS,
           Text(
             confirmText,
-            textAlign: TextAlign.center,
             style: normalTextStyle(normalTextColor),
           ),
         ],
@@ -149,7 +146,10 @@ class ConfirmDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text(AppLocalizations.of(context)!.cancel),
+          child: Text(
+            AppLocalizations.of(context)!.cancel,
+            style: const TextStyle(color: darkRedColor),
+          ),
         ),
         TextButton(
           onPressed: () => onConfirmed,
