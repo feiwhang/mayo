@@ -60,5 +60,9 @@
     "selectThisLocation": "เลือกตำแหน่งนี้",
     "ok": "ตกลง",
     "confirmCreateGym": "ยืนยันสร้างยิมใหม่",
-    "creatingGym": "กำลังสร้างยิม"
+    "creatingGym": "กำลังสร้างยิม",
+    "noDescription": "ไม่มีคำอธิบาย",
+    "offical": "มาตรฐาน",
+    "schedule": "ตารางเวลา",
+    "noSchedule": "ยังไม่มีตารางเวลา"
 }

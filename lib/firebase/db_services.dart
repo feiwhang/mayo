@@ -62,10 +62,10 @@ Future<void> createUserOnDb(Map<String, dynamic> registerData) async {
 }
 
 // return String of the gym id or null if admin doesn't join any gym yet
-Future<Map?> getAdminGymInfo() async {
+Future<Map<String, dynamic>?> getAdminGymInfo() async {
   DocumentSnapshot userDoc = await usersCollection.doc(getUID()).get();
 
-// get gymId from userData
+  // get gymId from userData
   final userData = userDoc.data() as Map<String, dynamic>;
   if (!userData.containsKey('gymId')) return null;
   final String gymId = userData['gymId'];
@@ -87,6 +87,9 @@ Future<void> createNewGym(Map<String, dynamic> gymData) async {
   // this is too strait forward
   // in a real-life app we may need some kind of verification for this step
   gymData["isOffical"] = await isOfficalGym(gymData['name']);
+  // add creator id, created timestamp
+  gymData['createdBy'] = getUID();
+  gymData['createdOn'] = Timestamp.fromDate(DateTime.now());
 
   // get imagePath by removing it from data
   final String imagePath = gymData.remove("imagePath");

@@ -60,5 +60,9 @@
     "selectThisLocation": "Select this location",
     "ok": "OK",
     "confirmCreateGym": "Confirm to create new gym",
-    "creatingGym": "Creating gym"
+    "creatingGym": "Creating gym",
+    "noDescription": "No description",
+    "offical": "Offical",
+    "schedule": "Schedule",
+    "noSchedule": "No schedule created yet"
 }
