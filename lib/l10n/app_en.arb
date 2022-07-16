@@ -59,5 +59,6 @@
     "refresh": "Refresh",
     "selectThisLocation": "Select this location",
     "ok": "OK",
-    "confirmCreateGym": "Confirm to create new gym"
+    "confirmCreateGym": "Confirm to create new gym",
+    "creatingGym": "Creating gym"
 }

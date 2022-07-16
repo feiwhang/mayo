@@ -152,7 +152,7 @@ class ConfirmDialog extends StatelessWidget {
           ),
         ),
         TextButton(
-          onPressed: () => onConfirmed,
+          onPressed: onConfirmed,
           child: Text(AppLocalizations.of(context)!.confirm),
         ),
       ],

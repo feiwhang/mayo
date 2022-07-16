@@ -23,3 +23,9 @@ Future<List<String>> getAllOfficalGymsName() async {
 
   return records.map((record) => record['ชื่อค่ายมวย'] as String).toList();
 }
+
+Future<bool> isOfficalGym(String name) async {
+  List<String> allOfficalNames = await getAllOfficalGymsName();
+
+  return allOfficalNames.contains(name);
+}

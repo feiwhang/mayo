@@ -59,5 +59,6 @@
     "refresh": "ลองใหม่อีกครั้ง",
     "selectThisLocation": "เลือกตำแหน่งนี้",
     "ok": "ตกลง",
-    "confirmCreateGym": "ยืนยันสร้างยิมใหม่"
+    "confirmCreateGym": "ยืนยันสร้างยิมใหม่",
+    "creatingGym": "กำลังสร้างยิม"
 }

@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mayo/firebase/db_services.dart';
 import 'package:mayo/providers/new_gym_provider.dart';
 import 'package:mayo/utils/constants/color_const.dart';
 import 'package:mayo/utils/constants/space_const.dart';
@@ -103,7 +104,21 @@ class PickLocationMap extends ConsumerWidget {
                   confirmText:
                       "name: ${newGym.nameController.text}\naddress: ${newGym.addressController.text}\nlat: ${newGym.cameraPosition!.target.latitude}\nlong: ${newGym.cameraPosition!.target.longitude}",
                   onConfirmed: () {
-                    // TODO: set up firebase logic
+                    Map<String, dynamic> gymData = {
+                      'name': newGym.nameController.text,
+                      'address': newGym.addressController.text,
+                      'lat': newGym.cameraPosition!.target.latitude,
+                      'long': newGym.cameraPosition!.target.longitude,
+                      'imagePath': newGym.imageFile!.path,
+                    };
+                    if (newGym.descController.text.isNotEmpty) {
+                      gymData['description'] = newGym.descController.text;
+                    }
+
+                    // close this confirm dialog first
+                    Navigator.of(context).pop();
+
+                    createNewGym(gymData);
                   },
                 ),
               );

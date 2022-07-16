@@ -17,9 +17,9 @@ class AdminMyGymView extends StatelessWidget {
         future: getAdminGymInfo(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            Map? gymInfo = snapshot.data!;
+            Map? gymData = snapshot.data!;
             return Center(
-              child: Text(gymInfo["name"]),
+              child: Text(gymData["name"]),
             );
           }
           // loading gym from db
