@@ -64,5 +64,10 @@
     "noDescription": "No description",
     "offical": "Offical",
     "schedule": "Schedule",
-    "noSchedule": "No schedule created yet"
+    "noSchedule": "No schedule created yet",
+    "createSchedule": "Create schedule",
+    "selectStarTime": "Class begins at",
+    "selectDuration": "Class duration",
+    "classCap": "Class capacity",
+    "mins": "minutes"
 }

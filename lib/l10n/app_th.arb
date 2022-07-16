@@ -64,5 +64,10 @@
     "noDescription": "ไม่มีคำอธิบาย",
     "offical": "มาตรฐาน",
     "schedule": "ตารางเวลา",
-    "noSchedule": "ยังไม่มีตารางเวลา"
+    "noSchedule": "ยังไม่มีตารางเวลา",
+    "createSchedule": "สร้างตารางเวลา",
+    "selectStarTime": "เวลาเริ่ม",
+    "selectDuration": "เวลากี่นาที",
+    "classCap": "ความจุ",
+    "mins": "นาที"
 }

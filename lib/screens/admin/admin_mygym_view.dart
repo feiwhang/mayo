@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mayo/firebase/db_services.dart';
@@ -138,10 +139,17 @@ class MyGym extends StatelessWidget {
                         AppLocalizations.of(context)!.schedule,
                         style: headerTextStyle(darkTextColor),
                       ),
-                      const Icon(
-                        Icons.add_circle,
-                        color: darkestYellowColor,
-                        size: 32,
+                      GestureDetector(
+                        onTap: () {
+                          showCupertinoModalPopup(
+                              context: context,
+                              builder: (context) => const AddScheduleModal());
+                        },
+                        child: const Icon(
+                          Icons.add_circle,
+                          color: darkestYellowColor,
+                          size: 32,
+                        ),
                       )
                     ],
                   ),
@@ -149,18 +157,22 @@ class MyGym extends StatelessWidget {
                 subtitle: gymData.containsKey('schedules')
                     ? Wrap(
                         children: List.generate(
-                          (gymData['schedules'] as Map).length,
-                          (index) => Container(
+                            (gymData['schedules'] as Map).length, (index) {
+                          List<String> scheduleStartAts =
+                              (gymData['schedules'] as Map<String, dynamic>)
+                                  .keys
+                                  .toList();
+                          scheduleStartAts.sort();
+
+                          return Container(
                             padding: const EdgeInsets.all(4),
                             decoration: BoxDecoration(
                               gradient: mainGradientH,
                               borderRadius: BorderRadius.circular(2),
                             ),
-                            child: Text((gymData['schedules'] as Map)
-                                .keys
-                                .elementAt(index)),
-                          ),
-                        ),
+                            child: Text(scheduleStartAts.elementAt(index)),
+                          );
+                        }),
                       )
                     : Text(
                         AppLocalizations.of(context)!.noSchedule,
@@ -170,6 +182,165 @@ class MyGym extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class AddScheduleModal extends StatefulWidget {
+  const AddScheduleModal({Key? key}) : super(key: key);
+
+  @override
+  State<AddScheduleModal> createState() => _AddScheduleModalState();
+}
+
+class _AddScheduleModalState extends State<AddScheduleModal> {
+  DateTime? startDt;
+  double duration = 90.0;
+  int maxStudent = 5;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(12),
+        ),
+      ),
+      height: 584,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: [
+              CupertinoButton(
+                child: Text(
+                  AppLocalizations.of(context)!.cancel,
+                  style: normalTextStyle(normalTextColor),
+                ),
+                onPressed: () => Navigator.pop(context),
+              ),
+              Text(AppLocalizations.of(context)!.createSchedule,
+                  style: subtitleTextStyle),
+              CupertinoButton(
+                child: Text(
+                  AppLocalizations.of(context)!.done,
+                  style: normalTextStyle(darkestYellowColor),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          ),
+          const Divider(),
+          Text(
+            AppLocalizations.of(context)!.selectStarTime,
+            style: normalTextStyle(darkestYellowColor),
+          ),
+          vSpaceS,
+          SizedBox(
+            height: 222,
+            child: CupertinoDatePicker(
+              mode: CupertinoDatePickerMode.time,
+              initialDateTime: DateTime.now(),
+              use24hFormat: true,
+              onDateTimeChanged: (DateTime newDt) {},
+            ),
+          ),
+          const Divider(),
+          vSpaceS,
+          Text(
+            AppLocalizations.of(context)!.selectDuration,
+            style: normalTextStyle(darkestYellowColor),
+          ),
+          vSpaceS,
+          Material(
+            child: Slider(
+              value: duration,
+              onChanged: (value) {
+                setState(() {
+                  duration = value;
+                });
+              },
+              thumbColor: darkestYellowColor,
+              activeColor: darkYellowColor,
+              inactiveColor: brightYellowColor,
+              min: 30,
+              max: 300,
+              divisions: 9,
+            ),
+          ),
+          vSpaceS,
+          Text(
+            '${duration.round().toString()} ${AppLocalizations.of(context)!.mins}',
+            style: subtitleTextStyle,
+          ),
+          const Divider(),
+          vSpaceS,
+          Text(
+            AppLocalizations.of(context)!.classCap,
+            style: normalTextStyle(darkestYellowColor),
+          ),
+          vSpaceS,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    if (maxStudent > 1) {
+                      maxStudent--;
+                    }
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  shadowColor: Colors.transparent,
+                  primary:
+                      maxStudent <= 1 ? Colors.grey.shade100 : lightRedColor,
+                  padding: EdgeInsets.zero,
+                ),
+                child: Icon(
+                  Icons.remove,
+                  color: maxStudent <= 1 ? normalTextColor : darkRedColor,
+                  size: 18,
+                ),
+              ),
+              hSpaceM,
+              Text(
+                maxStudent.toString(),
+                style: subtitleTextStyle,
+              ),
+              hSpaceM,
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    maxStudent++;
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  shadowColor: Colors.transparent,
+                  primary: lightestGreenColor,
+                  padding: EdgeInsets.zero,
+                ),
+                child: const Icon(
+                  Icons.add,
+                  color: darkGreenColor,
+                  size: 18,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
