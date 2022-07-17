@@ -72,7 +72,25 @@ Future<Map<String, dynamic>?> getAdminGymInfo() async {
 
   // get gymData
   DocumentSnapshot gymDoc = await gymsCollection.doc(gymId).get();
-  return gymDoc.data() as Map<String, dynamic>;
+
+  final Map<String, dynamic> gymData = gymDoc.data() as Map<String, dynamic>;
+  gymData["gymId"] = gymId;
+
+  // get schedules from subcollection
+  final QuerySnapshot schedulesSnapshot =
+      await gymsCollection.doc(gymId).collection("schedules").get();
+
+  gymData['schedules'] = <TimeOfDay>[];
+
+  for (var doc in schedulesSnapshot.docs) {
+    final scheduleData = doc.data() as Map<String, dynamic>;
+    final scheduleTime = TimeOfDay(
+        hour: scheduleData['startHr'], minute: scheduleData['startMin']);
+
+    gymData['schedules'].add(scheduleTime);
+  }
+
+  return gymData;
 }
 
 Future<void> createNewGym(Map<String, dynamic> gymData) async {
@@ -109,9 +127,31 @@ Future<void> createNewGym(Map<String, dynamic> gymData) async {
   final String imageUrl = await imageTask.ref.getDownloadURL();
 
   // then add imageUrl back to db doc
-  gymDbDoc.update({'imageUrl': imageUrl}).onError((error, stackTrace) {
+  await gymDbDoc.update({'imageUrl': imageUrl}).onError((error, stackTrace) {
     // TODO: HANDLE ERRS
   });
+
+  // navigate back to mainscreen-gymview
+  navigatorKey.currentState?.pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => const MainScreen()),
+      (Route<dynamic> route) => false);
+}
+
+Future<void> createGymSchedule(
+    Map<String, dynamic> scheduleData, String gymId) async {
+  showDialog(
+    context: navigatorKey.currentContext!,
+    builder: (BuildContext context) =>
+        LoadingDialog(loadingText: AppLocalizations.of(context)!.creatingGym),
+    barrierDismissible: false,
+  );
+
+  // schedules sub collection in gyms
+  final gymSchedulesCollection =
+      gymsCollection.doc(gymId).collection("schedules");
+
+  // add schedule data
+  await gymSchedulesCollection.add(scheduleData);
 
   // navigate back to mainscreen-gymview
   navigatorKey.currentState?.pushAndRemoveUntil(

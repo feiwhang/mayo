@@ -6,6 +6,8 @@ import 'package:mayo/screens/admin/create_gym_screen.dart';
 import 'package:mayo/utils/constants/color_const.dart';
 import 'package:mayo/utils/constants/space_const.dart';
 import 'package:mayo/utils/constants/text_style_const.dart';
+import 'package:mayo/utils/converter.dart';
+import 'package:mayo/widgets/alert_dialogs.dart';
 import 'package:mayo/widgets/cta.dart';
 import 'package:mayo/widgets/shadow_container.dart';
 
@@ -88,8 +90,7 @@ class MyGym extends StatelessWidget {
               aspectRatio: 16 / 9,
               child: Image.network(
                 gymData['imageUrl'],
-                loadingBuilder: (context, child, loadingProgress) =>
-                    Expanded(child: child),
+                loadingBuilder: (context, child, loadingProgress) => child,
                 fit: BoxFit.cover,
               ),
             ),
@@ -143,7 +144,9 @@ class MyGym extends StatelessWidget {
                         onTap: () {
                           showCupertinoModalPopup(
                               context: context,
-                              builder: (context) => const AddScheduleModal());
+                              builder: (context) => AddScheduleModal(
+                                    gymId: gymData['gymId'],
+                                  ));
                         },
                         child: const Icon(
                           Icons.add_circle,
@@ -156,21 +159,21 @@ class MyGym extends StatelessWidget {
                 ),
                 subtitle: gymData.containsKey('schedules')
                     ? Wrap(
-                        children: List.generate(
-                            (gymData['schedules'] as Map).length, (index) {
-                          List<String> scheduleStartAts =
-                              (gymData['schedules'] as Map<String, dynamic>)
-                                  .keys
-                                  .toList();
-                          scheduleStartAts.sort();
+                        spacing: 8,
+                        children:
+                            List.generate(gymData['schedules'].length, (index) {
+                          gymData['schedules'].sort(
+                              ((a, b) => a.toString().compareTo(b.toString())));
 
                           return Container(
-                            padding: const EdgeInsets.all(4),
+                            padding: const EdgeInsets.all(6),
                             decoration: BoxDecoration(
                               gradient: mainGradientH,
-                              borderRadius: BorderRadius.circular(2),
+                              borderRadius: BorderRadius.circular(4),
                             ),
-                            child: Text(scheduleStartAts.elementAt(index)),
+                            child: Text(
+                              timeToText(gymData['schedules'].elementAt(index)),
+                            ),
                           );
                         }),
                       )
@@ -188,7 +191,8 @@ class MyGym extends StatelessWidget {
 }
 
 class AddScheduleModal extends StatefulWidget {
-  const AddScheduleModal({Key? key}) : super(key: key);
+  const AddScheduleModal({Key? key, required this.gymId}) : super(key: key);
+  final String gymId;
 
   @override
   State<AddScheduleModal> createState() => _AddScheduleModalState();
@@ -197,7 +201,7 @@ class AddScheduleModal extends StatefulWidget {
 class _AddScheduleModalState extends State<AddScheduleModal> {
   DateTime? startDt;
   double duration = 90.0;
-  int maxStudent = 5;
+  int capacity = 5;
 
   @override
   Widget build(BuildContext context) {
@@ -235,7 +239,25 @@ class _AddScheduleModalState extends State<AddScheduleModal> {
                   style: normalTextStyle(darkestYellowColor),
                 ),
                 onPressed: () {
-                  Navigator.pop(context);
+                  // validate form first
+                  if (startDt == null) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => ErrorDialog(
+                        errTitle: AppLocalizations.of(context)!.sthWentWrong,
+                        errText: AppLocalizations.of(context)!.errorBlank,
+                      ),
+                    );
+                    return;
+                  }
+
+                  // then run firebase login
+                  createGymSchedule({
+                    "startHr": startDt!.hour,
+                    "startMin": startDt!.minute,
+                    "duration": duration,
+                    "capacity": capacity,
+                  }, widget.gymId);
                 },
               )
             ],
@@ -252,7 +274,11 @@ class _AddScheduleModalState extends State<AddScheduleModal> {
               mode: CupertinoDatePickerMode.time,
               initialDateTime: DateTime.now(),
               use24hFormat: true,
-              onDateTimeChanged: (DateTime newDt) {},
+              onDateTimeChanged: (DateTime newDt) {
+                setState(() {
+                  startDt = newDt;
+                });
+              },
             ),
           ),
           const Divider(),
@@ -296,34 +322,33 @@ class _AddScheduleModalState extends State<AddScheduleModal> {
               ElevatedButton(
                 onPressed: () {
                   setState(() {
-                    if (maxStudent > 1) {
-                      maxStudent--;
+                    if (capacity > 1) {
+                      capacity--;
                     }
                   });
                 },
                 style: ElevatedButton.styleFrom(
                   shape: const CircleBorder(),
                   shadowColor: Colors.transparent,
-                  primary:
-                      maxStudent <= 1 ? Colors.grey.shade100 : lightRedColor,
+                  primary: capacity <= 1 ? Colors.grey.shade100 : lightRedColor,
                   padding: EdgeInsets.zero,
                 ),
                 child: Icon(
                   Icons.remove,
-                  color: maxStudent <= 1 ? normalTextColor : darkRedColor,
+                  color: capacity <= 1 ? normalTextColor : darkRedColor,
                   size: 18,
                 ),
               ),
               hSpaceM,
               Text(
-                maxStudent.toString(),
+                capacity.toString(),
                 style: subtitleTextStyle,
               ),
               hSpaceM,
               ElevatedButton(
                 onPressed: () {
                   setState(() {
-                    maxStudent++;
+                    capacity++;
                   });
                 },
                 style: ElevatedButton.styleFrom(
