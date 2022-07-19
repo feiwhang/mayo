@@ -74,5 +74,10 @@
     "wrongGymId": "Gym ID ไม่ถูกต้อง",
     "todaysSchedule": "ตารางวันนี้",
     "capacity": "จำกัดต่อรอบ",
-    "duration": "ระยะเวลา"
+    "duration": "ระยะเวลา",
+    "reserve": "จอง",
+    "reserving": "กำลังจอง",
+    "success": "สำเร็จ!",
+    "reservedSpot": "จองเรียบร้อย",
+    "todayReserved": "จองแล้ววันนี้"
 }

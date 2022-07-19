@@ -106,70 +106,9 @@ class CustomerGym extends StatelessWidget {
               ],
             ),
             vSpaceM,
-            ShadowContainer(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                        Text(
-                          AppLocalizations.of(context)!.todaysSchedule,
-                          style: headerTextStyle(darkTextColor),
-                        ),
-                        vSpaceM,
-                      ] +
-                      ListTile.divideTiles(
-                        context: context,
-                        color: Colors.grey,
-                        tiles: List.generate(
-                          gymData['schedules'].length,
-                          (index) {
-                            gymData['schedules'].sort(((a, b) =>
-                                a.toString().compareTo(b.toString())));
-
-                            Map<String, dynamic> scheduleData =
-                                gymData['schedules'].elementAt(index);
-
-                            return ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              leading: Container(
-                                padding: const EdgeInsets.all(6),
-                                decoration: BoxDecoration(
-                                  gradient: mainGradientH,
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: Text(
-                                  timeToText(
-                                    scheduleData['startHr'],
-                                    scheduleData['startMin'],
-                                  ),
-                                ),
-                              ),
-                              title: FutureBuilder<int>(
-                                future: todayScheduleCapacity(gymData['gymId'],
-                                    scheduleData['scheduleId']),
-                                builder: (context, snapshot) {
-                                  return Text(
-                                    '${AppLocalizations.of(context)!.capacity} ${snapshot.hasData ? snapshot.data : '-'}/${scheduleData['capacity']}',
-                                  );
-                                },
-                              ),
-                              subtitle: Text(
-                                '${AppLocalizations.of(context)!.duration} ${scheduleData['duration'].floor()} ${AppLocalizations.of(context)!.mins}',
-                              ),
-                              trailing: TextButton(
-                                  onPressed: () {
-                                    // add firebase login to reserve spot for this schedule
-                                  },
-                                  child: const Text("reserve")),
-                            );
-                          },
-                        ),
-                      ).toList(),
-                ),
-              ),
-            ),
+            const TodayReserved(),
+            vSpaceM,
+            TodaySchedule(gymData: gymData),
           ],
         ),
       ),
@@ -253,6 +192,133 @@ class _JoinGymModalState extends State<JoinGymModal> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class TodaySchedule extends StatefulWidget {
+  const TodaySchedule({Key? key, required this.gymData}) : super(key: key);
+  final Map<String, dynamic> gymData;
+
+  @override
+  State<TodaySchedule> createState() => _TodayScheduleState();
+}
+
+class _TodayScheduleState extends State<TodaySchedule> {
+  @override
+  Widget build(BuildContext context) {
+    return ShadowContainer(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+                Text(
+                  AppLocalizations.of(context)!.todaysSchedule,
+                  style: headerTextStyle(darkTextColor),
+                ),
+                vSpaceM,
+              ] +
+              ListTile.divideTiles(
+                context: context,
+                color: Colors.grey,
+                tiles: List.generate(
+                  widget.gymData['schedules'].length,
+                  (index) {
+                    widget.gymData['schedules']
+                        .sort(((a, b) => a.toString().compareTo(b.toString())));
+
+                    Map<String, dynamic> scheduleData =
+                        widget.gymData['schedules'].elementAt(index);
+
+                    return ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          gradient: mainGradientH,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          timeToText(
+                            scheduleData['startHr'],
+                            scheduleData['startMin'],
+                          ),
+                        ),
+                      ),
+                      title: FutureBuilder<int>(
+                        future: todayScheduleCapacity(widget.gymData['gymId'],
+                            scheduleData['scheduleId']),
+                        builder: (context, snapshot) {
+                          return Text(
+                            '${AppLocalizations.of(context)!.capacity} ${snapshot.hasData ? snapshot.data : '-'}/${scheduleData['capacity']}',
+                          );
+                        },
+                      ),
+                      subtitle: Text(
+                        '${AppLocalizations.of(context)!.duration} ${scheduleData['duration'].floor()} ${AppLocalizations.of(context)!.mins}',
+                      ),
+                      trailing: FutureBuilder<bool>(
+                        future: isUserReserveScheduleAlready(
+                            widget.gymData['gymId'],
+                            scheduleData['scheduleId']),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData && !snapshot.data!) {
+                            // already reserved
+                            return TextButton(
+                              onPressed: () async {
+                                await reserveTodaySchedule(
+                                    widget.gymData['gymId'],
+                                    scheduleData['scheduleId']);
+
+                                setState(() {});
+                              },
+                              child: Text(
+                                AppLocalizations.of(context)!.reserve,
+                              ),
+                            );
+                          } else {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                AppLocalizations.of(context)!.reserve,
+                                style: normalTextStyle(normalTextColor),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ).toList(),
+        ),
+      ),
+    );
+  }
+}
+
+class TodayReserved extends StatelessWidget {
+  const TodayReserved({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadowContainer(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              AppLocalizations.of(context)!.todayReserved,
+              style: headerTextStyle(darkTextColor),
+            ),
+            vSpaceM,
+          ],
+        ),
       ),
     );
   }

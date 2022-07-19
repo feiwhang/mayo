@@ -74,5 +74,10 @@
     "wrongGymId": "Wrong Gym ID",
     "todaysSchedule": "Today's Schedule",
     "capacity": "Capacity",
-    "duration": "Duration"
+    "duration": "Duration",
+    "reserve": "Reserve",
+    "reserving": "Reserving spot",
+    "success": "Success!",
+    "reservedSpot": "Successfully reserved a spot",
+    "todayReserved": "Today Reserved"
 }

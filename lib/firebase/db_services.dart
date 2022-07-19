@@ -209,7 +209,66 @@ Future<int> todayScheduleCapacity(String gymId, String scheduleId) async {
     return 0;
   } else {
     Map<String, dynamic> reservationsData = doc.data() as Map<String, dynamic>;
-    List<String> userIds = reservationsData['reservee'];
+    List<String> userIds = reservationsData['reservee'].cast<String>();
     return userIds.length;
   }
+}
+
+Future<void> reserveTodaySchedule(String gymId, String scheduleId) async {
+  showDialog(
+    context: navigatorKey.currentContext!,
+    builder: (BuildContext context) =>
+        LoadingDialog(loadingText: AppLocalizations.of(context)!.reserving),
+    barrierDismissible: false,
+  );
+
+  // add userId (customer) to the list of reservee for td's schedule
+  await gymsCollection
+      .doc(gymId)
+      .collection('schedules')
+      .doc(scheduleId)
+      .collection('reservations')
+      .doc(todayDateString())
+      .set({
+    'reservee': FieldValue.arrayUnion([getUID()])
+  });
+
+  // add it to user reservation history
+  await usersCollection
+      .doc(getUID())
+      .collection("reservations")
+      .doc(todayDateString())
+      .set({
+    'scheduleIds': FieldValue.arrayUnion([scheduleId])
+  });
+
+  navigatorKey.currentState?.pop(); // close the loading dialog
+
+  showDialog(
+    context: navigatorKey.currentContext!,
+    builder: (BuildContext context) => SuccessDialog(
+      successText: AppLocalizations.of(context)!.success,
+      successTitle: AppLocalizations.of(context)!.reservedSpot,
+    ),
+    barrierDismissible: false,
+  );
+}
+
+Future<bool> isUserReserveScheduleAlready(
+    String gymId, String scheduleId) async {
+  final doc = await usersCollection
+      .doc(getUID())
+      .collection("reservations")
+      .doc(todayDateString())
+      .get();
+
+  if (doc.exists) {
+    Map<String, dynamic> todayReservationData =
+        doc.data() as Map<String, dynamic>;
+    return todayReservationData['scheduleIds']
+        .cast<String>()
+        .contains(scheduleId);
+  }
+
+  return false;
 }

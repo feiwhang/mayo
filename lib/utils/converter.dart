@@ -24,5 +24,5 @@ DateTime getDateTime(TimeOfDay t) {
 }
 
 String todayDateString() {
-  return DateFormat.yMd().format(DateTime.now());
+  return DateFormat.yMd().format(DateTime.now()).replaceAll('/', '-');
 }
