@@ -69,5 +69,10 @@
     "selectStarTime": "Class begins at",
     "selectDuration": "Class duration",
     "classCap": "Class capacity",
-    "mins": "minutes"
+    "mins": "minutes",
+    "joiningGym": "Joining gym",
+    "wrongGymId": "Wrong Gym ID",
+    "todaysSchedule": "Today's Schedule",
+    "capacity": "Capacity",
+    "duration": "Duration"
 }

@@ -69,5 +69,10 @@
     "selectStarTime": "เวลาเริ่ม",
     "selectDuration": "เวลากี่นาที",
     "classCap": "ความจุ",
-    "mins": "นาที"
+    "mins": "นาที",
+    "joiningGym": "กำลังเข้าร่วมยิม",
+    "wrongGymId": "Gym ID ไม่ถูกต้อง",
+    "todaysSchedule": "ตารางวันนี้",
+    "capacity": "จำกัดต่อรอบ",
+    "duration": "ระยะเวลา"
 }

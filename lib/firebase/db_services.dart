@@ -80,14 +80,13 @@ Future<Map<String, dynamic>?> getUserGymInfo() async {
   final QuerySnapshot schedulesSnapshot =
       await gymsCollection.doc(gymId).collection("schedules").get();
 
-  gymData['schedules'] = <TimeOfDay>[];
+  gymData['schedules'] = <Map<String, dynamic>>[];
 
   for (var doc in schedulesSnapshot.docs) {
     final scheduleData = doc.data() as Map<String, dynamic>;
-    final scheduleTime = TimeOfDay(
-        hour: scheduleData['startHr'], minute: scheduleData['startMin']);
+    scheduleData['scheduleId'] = doc.id;
 
-    gymData['schedules'].add(scheduleTime);
+    gymData['schedules'].add(scheduleData);
   }
 
   return gymData;
@@ -157,4 +156,60 @@ Future<void> createGymSchedule(
   navigatorKey.currentState?.pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => const MainScreen()),
       (Route<dynamic> route) => false);
+}
+
+Future<void> customerJoinGym(String gymId) async {
+  showDialog(
+    context: navigatorKey.currentContext!,
+    builder: (BuildContext context) =>
+        LoadingDialog(loadingText: AppLocalizations.of(context)!.joiningGym),
+    barrierDismissible: false,
+  );
+
+  // check if the gym exist
+  final doc = await gymsCollection.doc(gymId).get();
+  if (!doc.exists) {
+    // if gymId is wrong, show error dialog then exit function
+    navigatorKey.currentState?.pop();
+    showDialog(
+      context: navigatorKey.currentContext!,
+      builder: (BuildContext context) => ErrorDialog(
+        errTitle: AppLocalizations.of(context)!.sthWentWrong,
+        errText: AppLocalizations.of(context)!.wrongGymId,
+      ),
+    );
+    return;
+  }
+
+  // add customer id to gym's customer list
+  await gymsCollection.doc(gymId).update({
+    "customers": FieldValue.arrayUnion([getUID()])
+  });
+
+  // add gymId to customer userInfo
+  await usersCollection.doc(getUID()).update({"gymId": gymId});
+
+  // navigate back to mainscreen-gymview
+  navigatorKey.currentState?.pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => const MainScreen()),
+      (Route<dynamic> route) => false);
+}
+
+Future<int> todayScheduleCapacity(String gymId, String scheduleId) async {
+  final doc = await gymsCollection
+      .doc(gymId)
+      .collection('schedules')
+      .doc(scheduleId)
+      .collection('reservations')
+      .doc(todayDateString())
+      .get();
+
+  if (!doc.exists) {
+    // not reservation for today at this scheduleId for this gymId
+    return 0;
+  } else {
+    Map<String, dynamic> reservationsData = doc.data() as Map<String, dynamic>;
+    List<String> userIds = reservationsData['reservee'];
+    return userIds.length;
+  }
 }

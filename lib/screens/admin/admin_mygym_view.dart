@@ -165,6 +165,9 @@ class AdminGym extends StatelessWidget {
                           gymData['schedules'].sort(
                               ((a, b) => a.toString().compareTo(b.toString())));
 
+                          Map<String, dynamic> scheduleData =
+                              gymData['schedules'].elementAt(index);
+
                           return Container(
                             padding: const EdgeInsets.all(6),
                             decoration: BoxDecoration(
@@ -172,7 +175,10 @@ class AdminGym extends StatelessWidget {
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(
-                              timeToText(gymData['schedules'].elementAt(index)),
+                              timeToText(
+                                scheduleData['startHr'],
+                                scheduleData['startMin'],
+                              ),
                             ),
                           );
                         }),

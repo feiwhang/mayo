@@ -7,7 +7,10 @@ import 'package:mayo/utils/constants/color_const.dart';
 import 'package:mayo/utils/constants/main_const.dart';
 import 'package:mayo/utils/constants/space_const.dart';
 import 'package:mayo/utils/constants/text_style_const.dart';
+import 'package:mayo/utils/converter.dart';
+import 'package:mayo/widgets/alert_dialogs.dart';
 import 'package:mayo/widgets/cta.dart';
+import 'package:mayo/widgets/shadow_container.dart';
 
 class CustomerMyGymView extends ConsumerWidget {
   const CustomerMyGymView({Key? key}) : super(key: key);
@@ -71,7 +74,106 @@ class CustomerGym extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
+          children: [
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: Image.network(
+                gymData['imageUrl'],
+                loadingBuilder: (context, child, loadingProgress) => child,
+                fit: BoxFit.cover,
+              ),
+            ),
+            vSpaceM,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  gymData['name'],
+                  style: headerTextStyle(darkTextColor),
+                ),
+                hSpaceS,
+                gymData['isOffical']
+                    ? const Icon(
+                        Icons.check_circle,
+                        color: darkGreenColor,
+                      )
+                    : const SizedBox(),
+              ],
+            ),
+            vSpaceM,
+            ShadowContainer(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                        Text(
+                          AppLocalizations.of(context)!.todaysSchedule,
+                          style: headerTextStyle(darkTextColor),
+                        ),
+                        vSpaceM,
+                      ] +
+                      ListTile.divideTiles(
+                        context: context,
+                        color: Colors.grey,
+                        tiles: List.generate(
+                          gymData['schedules'].length,
+                          (index) {
+                            gymData['schedules'].sort(((a, b) =>
+                                a.toString().compareTo(b.toString())));
+
+                            Map<String, dynamic> scheduleData =
+                                gymData['schedules'].elementAt(index);
+
+                            return ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              leading: Container(
+                                padding: const EdgeInsets.all(6),
+                                decoration: BoxDecoration(
+                                  gradient: mainGradientH,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: Text(
+                                  timeToText(
+                                    scheduleData['startHr'],
+                                    scheduleData['startMin'],
+                                  ),
+                                ),
+                              ),
+                              title: FutureBuilder<int>(
+                                future: todayScheduleCapacity(gymData['gymId'],
+                                    scheduleData['scheduleId']),
+                                builder: (context, snapshot) {
+                                  return Text(
+                                    '${AppLocalizations.of(context)!.capacity} ${snapshot.hasData ? snapshot.data : '-'}/${scheduleData['capacity']}',
+                                  );
+                                },
+                              ),
+                              subtitle: Text(
+                                '${AppLocalizations.of(context)!.duration} ${scheduleData['duration'].floor()} ${AppLocalizations.of(context)!.mins}',
+                              ),
+                              trailing: TextButton(
+                                  onPressed: () {
+                                    // add firebase login to reserve spot for this schedule
+                                  },
+                                  child: const Text("reserve")),
+                            );
+                          },
+                        ),
+                      ).toList(),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -83,6 +185,8 @@ class JoinGymModal extends StatefulWidget {
 }
 
 class _JoinGymModalState extends State<JoinGymModal> {
+  final TextEditingController gymIdController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -119,7 +223,20 @@ class _JoinGymModalState extends State<JoinGymModal> {
                   AppLocalizations.of(context)!.done,
                   style: normalTextStyle(darkestYellowColor),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  if (gymIdController.text.isEmpty) {
+                    showDialog(
+                      context: navigatorKey.currentContext!,
+                      builder: (BuildContext context) => ErrorDialog(
+                        errTitle: AppLocalizations.of(context)!.sthWentWrong,
+                        errText: AppLocalizations.of(context)!.wrongGymId,
+                      ),
+                    );
+
+                    return;
+                  }
+                  customerJoinGym(gymIdController.text);
+                },
               )
             ],
           ),
@@ -131,6 +248,7 @@ class _JoinGymModalState extends State<JoinGymModal> {
                 decoration: roundedRectDecor(
                   "Gym ID *",
                 ),
+                controller: gymIdController,
               ),
             ),
           ),
