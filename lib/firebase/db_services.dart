@@ -272,3 +272,9 @@ Future<bool> isUserReserveScheduleAlready(
 
   return false;
 }
+
+Future<List<Map<String, dynamic>>> getAllGymData() async {
+  final query = await gymsCollection.get();
+
+  return query.docs.map((snapshot) => snapshot.data()).toList();
+}

@@ -12,8 +12,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mayo/widgets/alert_dialogs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AdminProfileView extends ConsumerWidget {
-  const AdminProfileView({Key? key}) : super(key: key);
+class ProfileView extends ConsumerWidget {
+  const ProfileView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

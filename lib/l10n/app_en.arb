@@ -42,7 +42,7 @@
     "home": "Home",
     "profile": "Profile",
     "myGym": "My Gym",
-    "search": "Search",
+    "discover": "Discover",
     "loadingGym": "Loading gym info",
     "noGym": "There's no gym information",
     "createGym": "Create new gym",
@@ -79,5 +79,5 @@
     "reserving": "Reserving spot",
     "success": "Success!",
     "reservedSpot": "Successfully reserved a spot",
-    "todayReserved": "Today Reserved"
+    "reserved": "Reserved"
 }

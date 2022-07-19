@@ -106,8 +106,6 @@ class CustomerGym extends StatelessWidget {
               ],
             ),
             vSpaceM,
-            const TodayReserved(),
-            vSpaceM,
             TodaySchedule(gymData: gymData),
           ],
         ),
@@ -282,9 +280,19 @@ class _TodayScheduleState extends State<TodaySchedule> {
                           } else {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                AppLocalizations.of(context)!.reserve,
-                                style: normalTextStyle(normalTextColor),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!.reserved,
+                                    style: normalTextStyle(darkGreenColor),
+                                  ),
+                                  const Icon(
+                                    Icons.check_circle,
+                                    color: darkGreenColor,
+                                  )
+                                ],
                               ),
                             );
                           }
@@ -294,30 +302,6 @@ class _TodayScheduleState extends State<TodaySchedule> {
                   },
                 ),
               ).toList(),
-        ),
-      ),
-    );
-  }
-}
-
-class TodayReserved extends StatelessWidget {
-  const TodayReserved({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ShadowContainer(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              AppLocalizations.of(context)!.todayReserved,
-              style: headerTextStyle(darkTextColor),
-            ),
-            vSpaceM,
-          ],
         ),
       ),
     );
