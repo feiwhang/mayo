@@ -61,8 +61,8 @@ Future<void> createUserOnDb(Map<String, dynamic> registerData) async {
       (Route<dynamic> route) => false);
 }
 
-// return String of the gym id or null if admin doesn't join any gym yet
-Future<Map<String, dynamic>?> getAdminGymInfo() async {
+// return gymData or null if user (both admin & customer) doesn't join any gym yet
+Future<Map<String, dynamic>?> getUserGymInfo() async {
   DocumentSnapshot userDoc = await usersCollection.doc(getUID()).get();
 
   // get gymId from userData

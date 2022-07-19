@@ -21,15 +21,18 @@ final adminBottomNavActiveIconData = [
 userBottomNavLabels(BuildContext context) => [
       AppLocalizations.of(context)!.home,
       AppLocalizations.of(context)!.search,
+      AppLocalizations.of(context)!.myGym,
       AppLocalizations.of(context)!.profile
     ];
 final userBottomNavIconData = [
   Icons.home_outlined,
-  Icons.search_outlined,
+  Icons.search,
+  Icons.fitness_center_outlined,
   Icons.account_circle_outlined
 ];
 final userBottomNavActiveIconData = [
   Icons.home,
   Icons.search,
+  Icons.fitness_center,
   Icons.account_circle
 ];

@@ -18,10 +18,10 @@ class AdminMyGymView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: FutureBuilder<Map<String, dynamic>?>(
-        future: getAdminGymInfo(),
+        future: getUserGymInfo(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return MyGym(gymData: snapshot.data!);
+            return AdminGym(gymData: snapshot.data!);
           }
           // loading gym from db
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -75,8 +75,8 @@ class AdminMyGymView extends StatelessWidget {
   }
 }
 
-class MyGym extends StatelessWidget {
-  const MyGym({Key? key, required this.gymData}) : super(key: key);
+class AdminGym extends StatelessWidget {
+  const AdminGym({Key? key, required this.gymData}) : super(key: key);
   final Map<String, dynamic> gymData;
 
   @override
